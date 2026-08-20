@@ -1,0 +1,1 @@
+ALTER TABLE "piece" ADD COLUMN "default_size" text;

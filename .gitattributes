@@ -1,0 +1,14 @@
+# Normalise to LF in the repository. The working copy may be CRLF on Windows,
+# but CI, the Docker image and the VPS all run Linux — a stray CR in a shell
+# script or Dockerfile is a runtime failure that never reproduces locally.
+* text=auto eol=lf
+
+# Binary: never touch these.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.ico binary
+*.ttf binary
+*.woff  binary
+*.woff2 binary

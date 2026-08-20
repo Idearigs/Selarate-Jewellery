@@ -1,0 +1,62 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1786003547884,
+      "tag": "0000_short_blizzard",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1786004801526,
+      "tag": "0001_add_default_size",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1786012972774,
+      "tag": "0002_add_admin_sessions",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1786014134314,
+      "tag": "0003_add_customer_accounts",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1786016544816,
+      "tag": "0004_add_audit_ratelimit_reset",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1786344255273,
+      "tag": "0005_magenta_trauma",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1786345968658,
+      "tag": "0006_condemned_starjammers",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1786685321665,
+      "tag": "0007_square_masked_marvel",
+      "breakpoints": true
+    }
+  ]
+}

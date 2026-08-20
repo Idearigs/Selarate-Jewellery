@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Karla:wght@300;400;500&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #E4E0D8; }
+  a { color: inherit; text-decoration: none; }
+  a:hover { color: inherit; }
+  input { font-family: 'Karla', sans-serif; }
+  ::placeholder { color: rgba(23,20,15,0.42); }
+</style>
+</helmet>
+
+<div style="width:1440px; margin:0 auto; background:#F5F2EC; color:#17140F; font-family:'Karla',sans-serif">
+
+  <header style="display:flex; align-items:center; justify-content:space-between; padding:26px 56px; border-bottom:1px solid rgba(23,20,15,0.12)">
+    <nav style="display:flex; gap:34px; font-size:12px; letter-spacing:0.16em; text-transform:uppercase">
+      <a href="#">One of a Kind</a><a href="#">Fine Jewelry</a><a href="#">The Atelier</a>
+    </nav>
+    <div style="font-family:'Marcellus',serif; font-size:23px; letter-spacing:0.34em; text-transform:uppercase">Brand Name</div>
+    <nav style="display:flex; gap:30px; font-size:12px; letter-spacing:0.16em; text-transform:uppercase">
+      <a href="#">Visit</a><a href="#" style="border-bottom:1px solid #17140F; padding-bottom:2px">Account</a><a href="#">Bag (0)</a>
+    </nav>
+  </header>
+
+  <div style="display:grid; grid-template-columns:1.05fr 1fr; align-items:stretch">
+
+    <div style="padding:88px 64px 96px 56px; display:flex; flex-direction:column; gap:40px">
+      <div style="display:flex; flex-direction:column; gap:18px">
+        <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:rgba(23,20,15,0.64)">Account</div>
+        <h1 style="margin:0; font-family:'Marcellus',serif; font-size:52px; line-height:1.06; font-weight:400; letter-spacing:-0.01em">{{ heading }}</h1>
+        <p style="margin:0; font-size:16px; line-height:1.7; color:rgba(23,20,15,0.7); max-width:460px; text-wrap:pretty">{{ blurb }}</p>
+      </div>
+
+      <div style="display:flex; gap:0; border-bottom:1px solid rgba(23,20,15,0.2)">
+        <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="2">
+          <button onClick="{{ t.select }}" style="{{ t.style }}">{{ t.label }}</button>
+        </sc-for>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:26px; max-width:520px">
+        <sc-for list="{{ fields }}" as="f" hint-placeholder-count="3">
+          <label style="display:flex; flex-direction:column; gap:9px">
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:rgba(23,20,15,0.64)">{{ f.label }}</span>
+            <input type="{{ f.type }}" placeholder="{{ f.placeholder }}" style="border:none; border-bottom:1px solid rgba(23,20,15,0.3); background:transparent; padding:12px 0; font-size:16px; color:#17140F; outline:none" style-focus="border-bottom-color:#17140F">
+          </label>
+        </sc-for>
+
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:24px; padding-top:2px">
+          <label style="display:flex; align-items:center; gap:11px; font-size:14px; color:rgba(23,20,15,0.72); cursor:pointer">
+            <input type="checkbox" style="width:15px; height:15px; accent-color:#17140F">
+            {{ checkboxLabel }}
+          </label>
+          <a href="#" style="font-size:12px; letter-spacing:0.14em; text-transform:uppercase; color:rgba(23,20,15,0.68); border-bottom:1px solid rgba(23,20,15,0.3); padding-bottom:4px">{{ secondaryLink }}</a>
+        </div>
+
+        <button onClick="{{ submit }}" style="{{ submitStyle }}">{{ submitLabel }}</button>
+
+        <div style="display:flex; flex-direction:column; gap:14px; padding-top:22px; border-top:1px solid rgba(23,20,15,0.12)">
+          <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:rgba(23,20,15,0.64)">No account needed</div>
+          <div style="display:flex; align-items:flex-end; gap:14px">
+            <label style="flex:1; display:flex; flex-direction:column; gap:8px">
+              <span style="font-size:13px; color:rgba(23,20,15,0.7)">Track an order with its number</span>
+              <input type="text" placeholder="Order no." style="border:none; border-bottom:1px solid rgba(23,20,15,0.3); background:transparent; padding:11px 0; font-size:15px; color:#17140F; outline:none" style-focus="border-bottom-color:#17140F">
+            </label>
+            <button style="font-family:'Karla',sans-serif; font-size:11px; letter-spacing:0.18em; text-transform:uppercase; background:transparent; border:1px solid rgba(23,20,15,0.35); padding:13px 22px; cursor:pointer; color:#17140F" style-hover="border-color:#17140F">Look up</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="position:relative; min-height:820px; background:repeating-linear-gradient(135deg,#E7E1D6 0 7px,#DFD8CB 7px 14px); display:flex; align-items:center; justify-content:center">
+      <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.14em; color:rgba(23,20,15,0.64); background:#F5F2EC; padding:9px 13px">EDITORIAL &mdash; worn piece, 3:4</span>
+      <div style="position:absolute; left:48px; bottom:48px; right:48px; background:#F5F2EC; padding:36px 40px; display:flex; flex-direction:column; gap:20px">
+        <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:rgba(23,20,15,0.64)">What an account holds</div>
+        <sc-for list="{{ benefits }}" as="b" hint-placeholder-count="3">
+          <div style="display:grid; grid-template-columns:150px 1fr; gap:20px; padding:13px 0; border-top:1px solid rgba(23,20,15,0.12)">
+            <span style="font-family:'Marcellus',serif; font-size:17px">{{ b.k }}</span>
+            <span style="font-size:14px; line-height:1.6; color:rgba(23,20,15,0.72)">{{ b.v }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <footer style="display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:40px; padding:88px 56px 56px; border-top:1px solid rgba(23,20,15,0.12)">
+    <div style="display:flex; flex-direction:column; gap:16px">
+      <div style="font-family:'Marcellus',serif; font-size:19px; letter-spacing:0.3em; text-transform:uppercase">Brand Name</div>
+      <p style="margin:0; font-size:13px; line-height:1.7; color:rgba(23,20,15,0.6)">Studio and showroom<br>By appointment</p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:12px; font-size:13px; color:rgba(23,20,15,0.7)">
+      <div style="font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:rgba(23,20,15,0.64); margin-bottom:4px">Shop</div>
+      <a href="#">One of a Kind</a><a href="#">Fine Jewelry</a><a href="#">Gift Cards</a>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:12px; font-size:13px; color:rgba(23,20,15,0.7)">
+      <div style="font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:rgba(23,20,15,0.64); margin-bottom:4px">Studio</div>
+      <a href="#">About</a><a href="#">Visit</a><a href="#">Contact</a>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:12px; font-size:13px; color:rgba(23,20,15,0.7)">
+      <div style="font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:rgba(23,20,15,0.64); margin-bottom:4px">Care</div>
+      <a href="#">Sizing</a><a href="#">Shipping</a><a href="#">Repairs</a>
+    </div>
+  </footer>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000}}">
+class Component extends DCLogic {
+  state = { mode: "signin", done: false };
+
+  renderVals() {
+    const signin = this.state.mode === "signin";
+    const tabBase = {
+      fontFamily: "'Karla',sans-serif", fontSize: 12, letterSpacing: "0.18em",
+      textTransform: "uppercase", background: "transparent", border: "none",
+      padding: "0 30px 15px", cursor: "pointer", marginBottom: "-1px"
+    };
+    const tab = active => active
+      ? { ...tabBase, color: "#17140F", borderBottom: "1px solid #17140F" }
+      : { ...tabBase, color: "rgba(23,20,15,0.55)", borderBottom: "1px solid transparent" };
+
+    return {
+      tabs: [
+        { label: "Sign in", select: () => this.setState({ mode: "signin", done: false }), style: tab(signin) },
+        { label: "Create account", select: () => this.setState({ mode: "register", done: false }), style: tab(!signin) }
+      ],
+      heading: signin ? "Welcome back." : "Create an account.",
+      blurb: signin
+        ? "Your order history, saved sizes and any piece you have reserved are kept here."
+        : "An account keeps your ring size on file and lets the studio hold a piece for you while you decide.",
+      fields: signin
+        ? [
+            { label: "Email", type: "email", placeholder: "you@email.com" },
+            { label: "Password", type: "password", placeholder: "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022" }
+          ]
+        : [
+            { label: "Name", type: "text", placeholder: "Full name" },
+            { label: "Email", type: "email", placeholder: "you@email.com" },
+            { label: "Password", type: "password", placeholder: "At least eight characters" }
+          ],
+      checkboxLabel: signin ? "Keep me signed in" : "Send occasional notes on new pieces",
+      secondaryLink: signin ? "Forgot password" : "Privacy policy",
+      submitLabel: this.state.done
+        ? (signin ? "Signed in" : "Account created")
+        : (signin ? "Sign in" : "Create account"),
+      submitStyle: {
+        fontFamily: "'Karla',sans-serif", fontSize: 11, letterSpacing: "0.24em",
+        textTransform: "uppercase", padding: "21px", cursor: "pointer",
+        border: "1px solid #17140F", width: "100%",
+        background: this.state.done ? "#F5F2EC" : "#17140F",
+        color: this.state.done ? "#17140F" : "#F5F2EC"
+      },
+      submit: () => this.setState(s => ({ done: !s.done })),
+      benefits: [
+        { k: "Reservations", v: "Hold a one-of-a-kind piece for sixty minutes while you decide." },
+        { k: "Your sizes", v: "Ring, bangle and chain lengths kept on file for future commissions." },
+        { k: "Care record", v: "Every cleaning, resize and repair logged against the piece." }
+      ]
+    };
+  }
+}
+
+</script>
+</body>
+</html>

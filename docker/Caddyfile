@@ -1,0 +1,22 @@
+{$SITE_DOMAIN} {
+	encode zstd gzip
+
+	# Photography served straight from MinIO, cached hard — image URLs are
+	# content-addressed on upload so they never need to change.
+	handle /media/* {
+		uri strip_prefix /media
+		header Cache-Control "public, max-age=31536000, immutable"
+		reverse_proxy minio:9000
+	}
+
+	handle {
+		reverse_proxy web:3000
+	}
+
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		-Server
+	}
+}

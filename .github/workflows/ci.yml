@@ -1,0 +1,51 @@
+name: CI
+
+# Every pull request, plus the two long-lived branches. Feature branches are
+# covered by their pull request rather than on push, so a work-in-progress
+# branch does not burn minutes on every commit.
+on:
+  pull_request:
+  push:
+    branches: [main, develop]
+
+concurrency:
+  # A newer push to the same ref makes the older run irrelevant.
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Types, lint, tests, build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: package.json   # reads engines.node — one source of truth
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      # No database service is needed. The suite runs Postgres in-process via
+      # PGlite, so it gets real Postgres semantics — FOR UPDATE, partial unique
+      # indexes — with nothing to provision.
+      - name: Tests
+        run: npm test
+
+      # lib/env.ts refuses to boot without DATABASE_URL and AUTH_SECRET. That
+      # guard is correct and stays; CI has no production secrets and needs none
+      # to compile.
+      - name: Build
+        run: npm run build
+        env:
+          SKIP_ENV_VALIDATION: "1"

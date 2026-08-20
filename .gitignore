@@ -1,0 +1,28 @@
+# Dev and prod server output. dev.log carries live password-reset links —
+# a working account-takeover token for anyone who can read the repo.
+*.log
+
+# AI source frames. The cropped, shipped copies live in public/photography/;
+# the 2752px originals are ~70MB and belong outside git history.
+/*.jpeg
+
+node_modules/
+.next/
+out/
+build/
+next-env.d.ts
+*.tsbuildinfo
+
+.env
+.env.local
+.env*.local
+
+.pglite/
+drizzle/meta/_journal.json.bak
+
+.DS_Store
+Thumbs.db
+
+playwright-report/
+test-results/
+coverage/

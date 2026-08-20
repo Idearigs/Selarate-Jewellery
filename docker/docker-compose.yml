@@ -1,0 +1,103 @@
+name: jewelry-store
+
+services:
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    environment:
+      SITE_DOMAIN: ${SITE_DOMAIN:-localhost}
+    depends_on:
+      web:
+        condition: service_healthy
+
+  web:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      target: runner
+    restart: unless-stopped
+    env_file: [../.env]
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER:-jewelry}:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-jewelry}
+      S3_ENDPOINT: http://minio:9000
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+
+  # One-shot. Runs to completion before `web` starts; `web` waits on it.
+  migrate:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      target: tools
+    command: ["npx", "drizzle-kit", "migrate"]
+    env_file: [../.env]
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER:-jewelry}:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-jewelry}
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
+
+  # Sweeps expired holds and drains the outbound email queue.
+  # Hold expiry is ALSO evaluated lazily on read, so this is a tidier, not a
+  # correctness dependency — see lib/holds.ts.
+  worker:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      target: tools
+    restart: unless-stopped
+    env_file: [../.env]
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER:-jewelry}:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-jewelry}
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-jewelry}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-jewelry}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./backup:/backup
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-jewelry}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Photography. S3-compatible, so moving to R2/S3 later is a config change.
+  minio:
+    image: minio/minio
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${S3_ACCESS_KEY_ID:?set S3_ACCESS_KEY_ID}
+      MINIO_ROOT_PASSWORD: ${S3_SECRET_ACCESS_KEY:?set S3_SECRET_ACCESS_KEY}
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  db_data:
+  minio_data:
+  caddy_data:
+  caddy_config:

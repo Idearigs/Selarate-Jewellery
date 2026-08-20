@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Karla:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #DEDAD2; }
+  a { color: inherit; text-decoration: none; }
+  a:hover { color: inherit; }
+  input, textarea, select { font-family: 'Karla', sans-serif; }
+  ::placeholder { color: rgba(23,20,15,0.4); }
+</style>
+</helmet>
+
+<div style="width:1600px; height:1000px; margin:0 auto; display:grid; grid-template-columns:236px 1fr; background:#F5F2EC; color:#17140F; font-family:'Karla',sans-serif; overflow:hidden">
+
+  <aside style="display:flex; flex-direction:column; background:#17140F; color:#EDEAE3">
+    <div style="padding:24px 20px 22px; border-bottom:1px solid rgba(237,234,227,0.14)">
+      <div style="font-family:'Marcellus',serif; font-size:15px; letter-spacing:0.26em; text-transform:uppercase; padding-left:0.26em">Brand Name</div>
+      <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:rgba(237,234,227,0.5); padding-top:8px">Studio Admin</div>
+    </div>
+
+    <nav style="flex:1; display:flex; flex-direction:column; padding:14px 12px; gap:2px; overflow-y:auto">
+      <sc-for list="{{ nav }}" as="n" hint-placeholder-count="8">
+        <button onClick="{{ n.go }}" style="{{ n.style }}">
+          <span>{{ n.label }}</span>
+          <span style="{{ n.badgeStyle }}">{{ n.badge }}</span>
+        </button>
+      </sc-for>
+    </nav>
+
+    <div style="padding:16px 20px 20px; border-top:1px solid rgba(237,234,227,0.14); display:flex; flex-direction:column; gap:10px">
+      <div style="display:flex; align-items:center; gap:11px">
+        <span style="width:30px; height:30px; background:rgba(237,234,227,0.16); display:flex; align-items:center; justify-content:center; font-family:'IBM Plex Mono',monospace; font-size:11px">AN</span>
+        <div style="display:flex; flex-direction:column; gap:2px">
+          <span style="font-size:13px">The Designer</span>
+          <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; color:rgba(237,234,227,0.5)">Owner</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main style="display:flex; flex-direction:column; overflow:hidden">
+
+    <div style="display:flex; align-items:center; justify-content:space-between; gap:24px; padding:0 28px; height:60px; border-bottom:1px solid rgba(23,20,15,0.14); flex-shrink:0">
+      <div style="display:flex; align-items:baseline; gap:14px">
+        <h1 style="margin:0; font-family:'Marcellus',serif; font-size:22px; font-weight:400">{{ pageTitle }}</h1>
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.12em; color:rgba(23,20,15,0.6)">{{ pageMeta }}</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px">
+        <input type="text" placeholder="Search pieces, orders, people" style="width:280px; border:1px solid rgba(23,20,15,0.2); background:transparent; padding:9px 12px; font-size:13px; color:#17140F; outline:none" style-focus="border-color:#17140F">
+        <button onClick="{{ primaryAction }}" style="{{ primaryStyle }}">{{ primaryLabel }}</button>
+      </div>
+    </div>
+
+    <div style="flex:1; overflow-y:auto">
+
+      <sc-if value="{{ isDashboard }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex; flex-direction:column">
+          <div style="display:grid; grid-template-columns:repeat(4,1fr)">
+            <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4">
+              <div style="padding:24px 28px; border-right:1px solid rgba(23,20,15,0.12); border-bottom:1px solid rgba(23,20,15,0.12); display:flex; flex-direction:column; gap:10px">
+                <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:rgba(23,20,15,0.6)">{{ k.label }}</span>
+                <span style="font-family:'Marcellus',serif; font-size:34px; line-height:1">{{ k.value }}</span>
+                <span style="font-size:12px; color:rgba(23,20,15,0.62)">{{ k.note }}</span>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1.5fr 1fr; flex:1">
+            <div style="border-right:1px solid rgba(23,20,15,0.12); display:flex; flex-direction:column">
+              <div style="padding:20px 28px 14px; display:flex; align-items:baseline; justify-content:space-between">
+                <h2 style="margin:0; font-family:'Marcellus',serif; font-size:19px; font-weight:400">Recent orders</h2>
+                <button onClick="{{ goOrders }}" style="{{ linkBtn }}">View all</button>
+              </div>
+              <div style="display:grid; grid-template-columns:96px 1.4fr 1fr 100px 110px; gap:16px; padding:10px 28px; border-top:1px solid rgba(23,20,15,0.12); border-bottom:1px solid rgba(23,20,15,0.12); font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:rgba(23,20,15,0.6)">
+                <span>Order</span><span>Customer</span><span>Piece</span><span>Status</span><span style="text-align:right">Total</span>
+              </div>
+              <sc-for list="{{ recentOrders }}" as="o" hint-placeholder-count="6">
+                <button onClick="{{ o.open }}" style="{{ rowBtn }}">
+                  <span style="font-family:'IBM Plex Mono',monospace; font-size:12px">{{ o.id }}</span>
+                  <span style="font-size:13px">{{ o.customer }}</span>
+                  <span style="font-size:13px; color:rgba(23,20,15,0.68)">{{ o.piece }}</span>
+                  <span style="{{ o.statusStyle }}">{{ o.status }}</span>
+                  <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; text-align:right">{{ o.total }}</span>
+                </button>
+              </sc-for>
+            </div>
+
+            <div style="display:flex; flex-direction:column">
+              <div style="padding:20px 28px 14px; display:flex; align-items:baseline; justify-content:space-between; border-bottom:1px solid rgba(23,20,15,0.12)">
+                <h2 style="margin:0; font-family:'Marcellus',serif; font-size:19px; font-weight:400">Needs attention</h2>
+                <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:rgba(23,20,15,0.6)">{{ alertCount }}</span>
+              </div>
+              <sc-for list="{{ alerts }}" as="a" hint-placeholder-count="4">
+                <div style="padding:16px 28px; border-bottom:1px solid rgba(23,20,15,0.1); display:flex; flex-direction:column; gap:6px">
+                  <div style="display:flex; align-items:center; gap:9px">
+                    <span style="{{ a.dot }}"></span>
+                    <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:rgba(23,20,15,0.6)">{{ a.kind }}</span>
+                  </div>
+                  <span style="font-size:13px; line-height:1.55">{{ a.body }}</span>
+                  <button onClick="{{ a.act }}" style="{{ linkBtn }}">{{ a.cta }}</button>
+                </div>
+              </sc-for>
+              <div style="padding:20px 28px; display:flex; flex-direction:column; gap:14px; background:#EBE6DC; margin-top:auto">
+                <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:rgba(23,20,15,0.6)">Bench queue</span>
+                <sc-for list="{{ bench }}" as="b" hint-placeholder-count="3">
+                  <div style="display:flex; flex-direction:column; gap:7px">
+                    <div style="display:flex; justify-content:space-between; font-size:13px">
+                      <span>{{ b.name }}</span>
+                      <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:rgba(23,20,15,0.62)">{{ b.stage }}</span>
+                    </div>
+                    <div style="height:3px; background:rgba(23,20,15,0.14)">
+                      <div style="{{ b.barStyle }}"></div>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isProducts }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex; flex-direction:column">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:20px; padding:14px 28px; border-bottom:1px solid rgba(23,20,15,0.12)">
+            <div style="display:flex; gap:8px">
+              <sc-for list="{{ productFilters }}" as="f" hint-placeholder-count="4">
+                <button onClick="{{ f.select }}" style="{{ f.style }}">{{ f.label }}</button>
+              </sc-for>
+            </div>
+            <div style="display:flex; align-items:center; gap:18px; font-family:'IBM Plex Mono',monospace; font-size:11px; color:rgba(23,20,15,0.6)">
+              <span>{{ productCount }}</span>
+              <button onClick="{{ noop }}" style="{{ linkBtn }}">Export CSV</button>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:52px 1.6fr 1fr 108px 96px 110px 96px; gap:16px; padding:11px 28px; border-bottom:1px solid rgba(23,20,15,0.12); font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:rgba(23,20,15,0.6)">
+            <span></span><span>Piece</span><span>Category</span><span>Status</span><span style="text-align:right">Stock</span><span style="text-align:right">Price</span><span style="text-align:right">Views</span>
+          </div>
+          <sc-for list="{{ products }}" as="p" hint-placeholder-count="8">
+            <button onClick="{{ p.open }}" style="{{ productRowBtn }}">
+              <span style="width:38px; height:46px; background:repeating-linear-gradient(135deg,#E7E1D6 0 6px,#DFD8CB 6px 12px)"></span>
+              <span style="display:flex; flex-direction:column; gap:4px; text-align:left">
+                <span style="font-family:'Marcellus',serif; font-size:16px">{{ p.name }}</span>
+                <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.1em; color:rgba(23,20,15,0.6)">{{ p.ref }} &middot; {{ p.material }}</span>
+              </span>
+              <span style="font-size:13px; color:rgba(23,20,15,0.7)">{{ p.category }}</span>
+              <span style="{{ p.statusStyle }}">{{ p.status }}</span>
+              <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; text-align:right">{{ p.stock }}</span>
+              <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; text-align:right">{{ p.price }}</span>
+              <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; text-align:right; color:rgba(23,20,15,0.6)">{{ p.views }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isProductEdit }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid; grid-template-columns:1fr 340px; min-height:100%">
+          <div style="padding:28px; display:flex; flex-direction:column; gap:28px; border-right:1px solid rgba(23,20,15,0.12)">
+            <button onClick="{{ goProducts }}" style="{{ linkBtn }}">&larr; All pieces</button>
+
+            <div style="display:flex; flex-direction:column; gap:16px">
+              <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:rgba(23,20,15,0.6)">Photography</span>
+              <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:10px">
+                <sc-for list="{{ shots }}" as="s" hint-placeholder-count="5">
+                  <div style="{{ s.style }}">
+                    <span style="font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:0.1em; color:rgba(23,20,15,0.6); text-align:center">{{ s.label }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px">
+              <label style="display:flex; flex-direction:column; gap:8px; grid-column:span 2">
+                <span style="{{ fieldLabel }}">Name</span>
+                <input type="text" value="Sweet Pea Ring" style="{{ inputStyle }}">
+              </label>
+              <label style="display:flex; flex-direction:column; gap:8px">
+                <span style="{{ fieldLabel }}">Reference</span>
+                <input type="text" value="A—01" style="{{ inputStyle }}">
+              </label>
+              <label style="display:flex; flex-direction:column; gap:8px">
+                <span style="{{ fieldLabel }}">Price (USD)</span>
+                <input type="text" value="14,800" style="{{ inputStyle }}">
+              </label>
+              <label style="display:flex; flex-direction:column; gap:8px; grid-column:span 2">
+                <span style="{{ fieldLabel }}">Material line</span>
+                <input type="text" value="18k yellow gold, 4.2 ct green tourmaline" style="{{ inputStyle }}">
+              </label>
+              <label style="display:flex; flex-direction:column; gap:8px; grid-column:span 2">
+                <span style="{{ fieldLabel }}">Story</span>
+                <textarea rows="5" style="{{ textareaStyle }}">The stone was bought loose in 2021 and sat in the studio for two years before the setting was drawn around it. The band is forged rather than cast, so the shank thins slightly at the back where it sits against the palm.</textarea>
+              </label>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:14px">
+              <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:rgba(23,20,15,0.6)">Specification</span>
+              <div style="display:flex; flex-direction:column">
+                <sc-for list="{{ specRows }}" as="s" hint-placeholder-count="5">
+                  <div style="display:grid; grid-template-columns:150px 1fr; gap:16px; padding:11px 0; border-bottom:1px solid rgba(23,20,15,0.1); align-items:center">
+                    <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:rgba(23,20,15,0.6)">{{ s.k }}</span>
+                    <input type="text" value="{{ s.v }}" style="{{ bareInput }}">
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column">
+            <div style="padding:24px 24px 22px; display:flex; flex-direction:column; gap:16px; border-bottom:1px solid rgba(23,20,15,0.12)">
+              <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:rgba(23,20,15,0.6)">Availability</span>
+              <div style="display:flex; flex-direction:column; gap:8px">
+                <sc-for list="{{ availOptions }}" as="a" hint-placeholder-count="3">
+                  <button onClick="{{ a.select }}" style="{{ a.style }}">
+                    <span style="display:flex; flex-direction:column; gap:3px; text-align:left">
+                      <span style="font-size:13px">{{ a.label }}</span>
+                      <span style="font-size:11px; color:rgba(23,20,15,0.6)">{{ a.note }}</span>
+                    </span>
+                    <span style="{{ a.mark }}"></span>
+                  </button>
+                </sc-for>
+              </div>
+            </div>
+
+            <div style="padding:22px 24px; display:flex; flex-direction:column; gap:14px; border-bottom:1px solid rgba(23,20,15,0.12)">
+              <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:rgba(23,20,15,0.6)">Sizes offered</span>
+              <div style="display:flex; flex-wrap:wrap; gap:7px">
+                <sc-for list="{{ sizeChips }}" as="s" hint-placeholder-count="6">
+                  <button onClick="{{ s.select }}" style="{{ s.style }}">{{ s.label }}</button>
+                </sc-for>
+              </div>
+              <span style="font-size:12px; line-height:1.6; color:rgba(23,20,15,0.62)">One-of-a-kind pieces ship in the size made; two sizes of adjustment are free.</span>
+            </div>
+
+            <div style="padding:22px 24px; display:flex; flex-direction:column; gap:12px; border-bottom:1px solid rgba(23,20,15,0.12)">
+              <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:rgba(23,20,15,0.6)">Activity</span>
+              <sc-for list="{{ activity }}" as="a" hint-placeholder-count="4">
+                <div style="display:flex; gap:12px; font-size:12px">
+                  <span style="font-family:'IBM Plex Mono',monospace; color:rgba(23,20,15,0.55); white-space:nowrap">{{ a.when }}</span>
+                  <span style="color:rgba(23,20,15,0.8); line-height:1.5">{{ a.what }}</span>
+                </div>
+              </sc-for>
+            </div>
+
+            <div style="padding:22px 24px; display:flex; flex-direction:column; gap:10px; margin-top:auto">
+              <button onClick="{{ save }}" style="{{ saveStyle }}">{{ saveLabel }}</button>
+              <button onClick="{{ noop }}" style="{{ ghostBtn }}">Preview on site</button>
+              <button onClick="{{ noop }}" style="{{ dangerBtn }}">Archive piece</button>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isOrders }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex; flex-direction:column">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:20px; padding:14px 28px; border-bottom:1px solid rgba(23,20,15,0.12)">
+            <div style="display:flex; gap:8px">
+              <sc-for list="{{ orderFilters }}" as="f" hint-placeholder-count="5">
+                <button onClick="{{ f.select }}" style="{{ f.style }}">{{ f.label }}</button>
+              </sc-for>
+            </div>
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:rgba(23,20,15,0.6)">{{ orderCount }}</span>
+          </div>
+          <div style="display:grid; grid-template-columns:100px 1.3fr 1.3fr 120px 120px 110px; gap:16px; padding:11px 28px; border-bottom:1px solid rgba(23,20,15,0.12); font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:rgba(23,20,15,0.6)">
+            <span>Order</span><span>Customer</span><span>Piece</span><span>Placed</span><span>Status</span><span style="text-align:right">Total</span>
+          </div>
+          <sc-for list="{{ orders }}" as="o" hint-placeholder-count="9">
+            <button onClick="{{ o.open }}" style="{{ orderRowBtn }}">
+              <span style="font-family:'IBM Plex Mono',monospace; font-size:12px">{{ o.id }}</span>
+              <span style="display:flex; flex-direction:column; gap:3px; text-align:left">
+                <span style="font-size:13px">{{ o.customer }}</span>
+                <span style="font-size:11px; color:rgba(23,20,15,0.58)">{{ o.email }}</span>
+              </span>
+              <span style="font-size:13px; color:rgba(23,20,15,0.72)">{{ o.piece }}</span>
+              <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:rgba(23,20,15,0.62)">{{ o.placed }}</span>
+              <span style="{{ o.statusStyle }}">{{ o.status }}</span>
+              <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; text-align:right">{{ o.total }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isOrderDetail }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid; grid-template-columns:1fr 340px; min-height:100%">
+          <div style="padding:28px; display:flex; flex-direction:column; gap:26px; border-right:1px solid rgba(23,20,15,0.12)">
+            <button onClick="{{ goOrders }}" style="{{ linkBtn }}">&larr; All orders</button>
+
+            <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:24px">
+              <div style="display:flex; flex-direction:column; gap:10px">
+                <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.14em; color:rgba(23,20,15,0.6)">#4419 &middot; placed 4 Aug 2026, 09:12</span>
+                <h2 style="margin:0; font-family:'Marcellus',serif; font-size:30px; font-weight:400">Eleanor Whitfield</h2>
+                <span style="font-size:13px; color:rgba(23,20,15,0.68)">eleanor.w@email.com &middot; +1 (415) 555-0147 &middot; 4th order</span>
+              </div>
+              <span style="{{ bigStatus }}">Paid &mdash; awaiting dispatch</span>
+            </div>
+
+            <div style="display:flex; flex-direction:column; border-top:1px solid rgba(23,20,15,0.14)">
+              <div style="display:grid; grid-template-columns:70px 1fr 110px 110px; gap:16px; padding:18px 0; border-bottom:1px solid rgba(23,20,15,0.1); align-items:center">
+                <span style="width:56px; height:70px; background:repeating-linear-gradient(135deg,#E7E1D6 0 6px,#DFD8CB 6px 12px)"></span>
+                <span style="display:flex; flex-direction:column; gap:5px">
+                  <span style="font-family:'Marcellus',serif; font-size:19px">Sweet Pea Ring</span>
+                  <span style="font-size:12px; color:rgba(23,20,15,0.65)">A&mdash;01 &middot; 18k yellow gold, 4.2 ct green tourmaline</span>
+                  <span style="font-size:12px; color:rgba(23,20,15,0.65)">Size US 6&frac12; &middot; engraved "for E, 2026"</span>
+                </span>
+                <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; text-align:right">1 of 1</span>
+                <span style="font-family:'IBM Plex Mono',monospace; font-size:13px; text-align:right">$14,800</span>
+              </div>
+              <div style="display:flex; flex-direction:column; padding-top:14px; align-items:flex-end; gap:9px">
+                <sc-for list="{{ orderTotals }}" as="t" hint-placeholder-count="4">
+                  <div style="display:grid; grid-template-columns:160px 110px; gap:16px; font-size:13px">
+                    <span style="text-align:right; color:rgba(23,20,15,0.65)">{{ t.k }}</span>
+                    <span style="text-align:right; font-family:'IBM Plex Mono',monospace">{{ t.v }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px; padding-top:8px">
+              <div style="display:flex; flex-direction:column; gap:10px">
+                <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:rgba(23,20,15,0.6)">Ship to</span>
+                <span style="font-size:14px; line-height:1.7; color:rgba(23,20,15,0.85)">Eleanor Whitfield<br>1140 Sansome Street, Apt 6<br>San Francisco, CA 94111<br>United States</span>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:10px">
+                <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:rgba(23,20,15,0.6)">Payment</span>
+                <span style="font-size:14px; line-height:1.7; color:rgba(23,20,15,0.85)">Visa ending 4417<br>Captured 4 Aug, 09:12<br>Insured to full value</span>
+              </div>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:14px">
+              <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:rgba(23,20,15,0.6)">Timeline</span>
+              <sc-for list="{{ timeline }}" as="t" hint-placeholder-count="4">
+                <div style="display:grid; grid-template-columns:130px 1fr; gap:16px; padding-bottom:12px; border-bottom:1px solid rgba(23,20,15,0.08)">
+                  <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:rgba(23,20,15,0.55)">{{ t.when }}</span>
+                  <span style="font-size:13px; line-height:1.55">{{ t.what }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column">
+            <div style="padding:24px; display:flex; flex-direction:column; gap:10px; border-bottom:1px solid rgba(23,20,15,0.12)">
+              <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:rgba(23,20,15,0.6); padding-bottom:4px">Fulfilment</span>
+              <button onClick="{{ fulfil }}" style="{{ fulfilStyle }}">{{ fulfilLabel }}</button>
+              <button onClick="{{ noop }}" style="{{ ghostBtn }}">Print packing note</button>
+              <button onClick="{{ noop }}" style="{{ ghostBtn }}">Email the customer</button>
+              <button onClick="{{ noop }}" style="{{ dangerBtn }}">Refund order</button>
+            </div>
+            <div style="padding:22px 24px; display:flex; flex-direction:column; gap:12px; border-bottom:1px solid rgba(23,20,15,0.12)">
+              <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:rgba(23,20,15,0.6)">Studio note</span>
+              <textarea rows="4" placeholder="Notes travel with the order, not to the customer" style="{{ textareaStyle }}"></textarea>
+            </div>
+            <div style="padding:22px 24px; display:flex; flex-direction:column; gap:14px; background:#EBE6DC; margin-top:auto">
+              <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:rgba(23,20,15,0.6)">Customer since 2022</span>
+              <sc-for list="{{ customerStats }}" as="c" hint-placeholder-count="3">
+                <div style="display:flex; justify-content:space-between; font-size:13px">
+                  <span style="color:rgba(23,20,15,0.7)">{{ c.k }}</span>
+                  <span style="font-family:'IBM Plex Mono',monospace">{{ c.v }}</span>
+                </div>
+              </sc-for>
+              <button onClick="{{ goCustomers }}" style="{{ linkBtn }}">Open customer record</button>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isInventory }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex; flex-direction:column">
+          <div style="display:grid; grid-template-columns:repeat(4,1fr); border-bottom:1px solid rgba(23,20,15,0.12)">
+            <sc-for list="{{ invKpis }}" as="k" hint-placeholder-count="4">
+              <div style="padding:20px 28px; border-right:1px solid rgba(23,20,15,0.12); display:flex; flex-direction:column; gap:8px">
+                <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:rgba(23,20,15,0.6)">{{ k.label }}</span>
+                <span style="font-family:'Marcellus',serif; font-size:28px; line-height:1">{{ k.value }}</span>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="padding:20px 28px 12px; display:flex; align-items:baseline; justify-content:space-between">
+            <h2 style="margin:0; font-family:'Marcellus',serif; font-size:19px; font-weight:400">Loose stone &amp; metal</h2>
+            <button onClick="{{ noop }}" style="{{ linkBtn }}">Log a purchase</button>
+          </div>
+          <div style="display:grid; grid-template-columns:1.4fr 1fr 1fr 110px 120px 120px; gap:16px; padding:11px 28px; border-top:1px solid rgba(23,20,15,0.12); border-bottom:1px solid rgba(23,20,15,0.12); font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:rgba(23,20,15,0.6)">
+            <span>Material</span><span>Origin</span><span>Acquired</span><span style="text-align:right">Qty</span><span style="text-align:right">Cost</span><span>Status</span>
+          </div>
+          <sc-for list="{{ inventory }}" as="i" hint-placeholder-count="8">
+            <div style="display:grid; grid-template-columns:1.4fr 1fr 1fr 110px 120px 120px; gap:16px; padding:14px 28px; border-bottom:1px solid rgba(23,20,15,0.09); align-items:center">
+              <span style="display:flex; flex-direction:column; gap:3px">
+                <span style="font-size:14px">{{ i.name }}</span>
+                <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; color:rgba(23,20,15,0.58)">{{ i.ref }}</span>
+              </span>
+              <span style="font-size:13px; color:rgba(23,20,15,0.7)">{{ i.origin }}</span>
+              <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:rgba(23,20,15,0.62)">{{ i.acquired }}</span>
+              <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; text-align:right">{{ i.qty }}</span>
+              <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; text-align:right">{{ i.cost }}</span>
+              <span style="{{ i.statusStyle }}">{{ i.status }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isCustomers }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex; flex-direction:column">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:20px; padding:14px 28px; border-bottom:1px solid rgba(23,20,15,0.12)">
+            <div style="display:flex; gap:8px">
+              <sc-for list="{{ customerFilters }}" as="f" hint-placeholder-count="4">
+                <button onClick="{{ f.select }}" style="{{ f.style }}">{{ f.label }}</button>
+              </sc-for>
+            </div>
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:rgba(23,20,15,0.6)">{{ customerCount }}</span>
+          </div>
+          <div style="display:grid; grid-template-columns:1.4fr 1.2fr 100px 120px 130px 1fr; gap:16px; padding:11px 28px; border-bottom:1px solid rgba(23,20,15,0.12); font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:rgba(23,20,15,0.6)">
+            <span>Customer</span><span>Location</span><span style="text-align:right">Orders</span><span style="text-align:right">Lifetime</span><span>Last seen</span><span>Note</span>
+          </div>
+          <sc-for list="{{ customers }}" as="c" hint-placeholder-count="8">
+            <div style="display:grid; grid-template-columns:1.4fr 1.2fr 100px 120px 130px 1fr; gap:16px; padding:15px 28px; border-bottom:1px solid rgba(23,20,15,0.09); align-items:center">
+              <span style="display:flex; align-items:center; gap:11px">
+                <span style="{{ c.avatar }}">{{ c.initials }}</span>
+                <span style="display:flex; flex-direction:column; gap:3px">
+                  <span style="font-size:14px">{{ c.name }}</span>
+                  <span style="font-size:11px; color:rgba(23,20,15,0.58)">{{ c.email }}</span>
+                </span>
+              </span>
+              <span style="font-size:13px; color:rgba(23,20,15,0.7)">{{ c.location }}</span>
+              <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; text-align:right">{{ c.orders }}</span>
+              <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; text-align:right">{{ c.lifetime }}</span>
+              <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:rgba(23,20,15,0.62)">{{ c.lastSeen }}</span>
+              <span style="font-size:12px; color:rgba(23,20,15,0.68); line-height:1.5">{{ c.note }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isChat }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid; grid-template-columns:280px 1fr 300px; height:100%">
+          <div style="border-right:1px solid rgba(23,20,15,0.12); display:flex; flex-direction:column; overflow-y:auto">
+            <div style="padding:13px 18px; border-bottom:1px solid rgba(23,20,15,0.12); display:flex; gap:7px">
+              <sc-for list="{{ chatFilters }}" as="f" hint-placeholder-count="3">
+                <button onClick="{{ f.select }}" style="{{ f.style }}">{{ f.label }}</button>
+              </sc-for>
+            </div>
+            <sc-for list="{{ threads }}" as="t" hint-placeholder-count="6">
+              <button onClick="{{ t.open }}" style="{{ t.style }}">
+                <span style="display:flex; align-items:center; justify-content:space-between; gap:10px">
+                  <span style="display:flex; align-items:center; gap:9px">
+                    <span style="{{ t.dot }}"></span>
+                    <span style="font-size:13px; font-weight:500">{{ t.name }}</span>
+                  </span>
+                  <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; color:rgba(23,20,15,0.55)">{{ t.when }}</span>
+                </span>
+                <span style="font-size:12px; line-height:1.5; color:rgba(23,20,15,0.65); text-align:left">{{ t.preview }}</span>
+                <span style="{{ t.tagStyle }}">{{ t.tag }}</span>
+              </button>
+            </sc-for>
+          </div>
+
+          <div style="display:flex; flex-direction:column; overflow:hidden">
+            <div style="padding:14px 24px; border-bottom:1px solid rgba(23,20,15,0.12); display:flex; align-items:center; justify-content:space-between">
+              <div style="display:flex; flex-direction:column; gap:3px">
+                <span style="font-size:15px; font-weight:500">Marguerite Sull</span>
+                <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.1em; color:rgba(23,20,15,0.6)">Browsing &mdash; Tideline Pendant &middot; 4 min on page</span>
+              </div>
+              <div style="display:flex; gap:8px">
+                <button onClick="{{ noop }}" style="{{ ghostSmall }}">Assign</button>
+                <button onClick="{{ resolveChat }}" style="{{ resolveStyle }}">{{ resolveLabel }}</button>
+              </div>
+            </div>
+
+            <div style="flex:1; overflow-y:auto; padding:24px; display:flex; flex-direction:column; gap:16px">
+              <sc-for list="{{ messages }}" as="m" hint-placeholder-count="5">
+                <div style="{{ m.wrap }}">
+                  <span style="{{ m.bubble }}">{{ m.body }}</span>
+                  <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; color:rgba(23,20,15,0.5)">{{ m.meta }}</span>
+                </div>
+              </sc-for>
+            </div>
+
+            <div style="border-top:1px solid rgba(23,20,15,0.12); padding:14px 24px 18px; display:flex; flex-direction:column; gap:11px">
+              <div style="display:flex; gap:7px; flex-wrap:wrap">
+                <sc-for list="{{ canned }}" as="c" hint-placeholder-count="3">
+                  <button onClick="{{ c.use }}" style="{{ chipGhost }}">{{ c.label }}</button>
+                </sc-for>
+              </div>
+              <div style="display:flex; gap:12px; align-items:flex-end">
+                <textarea rows="2" placeholder="Reply to Marguerite" style="{{ chatInput }}"></textarea>
+                <button onClick="{{ noop }}" style="{{ sendStyle }}">Send</button>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; overflow-y:auto">
+            <div style="padding:20px 22px; display:flex; flex-direction:column; gap:14px; border-bottom:1px solid rgba(23,20,15,0.12)">
+              <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:rgba(23,20,15,0.6)">Visitor</span>
+              <sc-for list="{{ visitorFacts }}" as="v" hint-placeholder-count="5">
+                <div style="display:flex; justify-content:space-between; gap:14px; font-size:12px">
+                  <span style="color:rgba(23,20,15,0.62)">{{ v.k }}</span>
+                  <span style="text-align:right">{{ v.v }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="padding:20px 22px; display:flex; flex-direction:column; gap:12px; border-bottom:1px solid rgba(23,20,15,0.12)">
+              <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:rgba(23,20,15,0.6)">Viewing now</span>
+              <div style="display:flex; gap:12px; align-items:center">
+                <span style="width:46px; height:58px; background:repeating-linear-gradient(135deg,#E7E1D6 0 6px,#DFD8CB 6px 12px)"></span>
+                <span style="display:flex; flex-direction:column; gap:4px">
+                  <span style="font-family:'Marcellus',serif; font-size:16px">Tideline Pendant</span>
+                  <span style="font-family:'IBM Plex Mono',monospace; font-size:11px">$6,450 &middot; available</span>
+                </span>
+              </div>
+              <button onClick="{{ noop }}" style="{{ ghostSmall }}">Send this piece in chat</button>
+            </div>
+            <div style="padding:20px 22px; display:flex; flex-direction:column; gap:11px">
+              <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:rgba(23,20,15,0.6)">Earlier conversations</span>
+              <sc-for list="{{ pastChats }}" as="p" hint-placeholder-count="3">
+                <div style="display:flex; flex-direction:column; gap:4px; padding-bottom:10px; border-bottom:1px solid rgba(23,20,15,0.08)">
+                  <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; color:rgba(23,20,15,0.55)">{{ p.when }}</span>
+                  <span style="font-size:12px; line-height:1.5; color:rgba(23,20,15,0.75)">{{ p.what }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isSettings }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0">
+          <div style="padding:28px; display:flex; flex-direction:column; gap:26px; border-right:1px solid rgba(23,20,15,0.12)">
+            <div style="display:flex; flex-direction:column; gap:14px">
+              <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:rgba(23,20,15,0.6)">Studio</span>
+              <label style="display:flex; flex-direction:column; gap:8px">
+                <span style="{{ fieldLabel }}">Shop name</span>
+                <input type="text" value="Brand Name" style="{{ inputStyle }}">
+              </label>
+              <label style="display:flex; flex-direction:column; gap:8px">
+                <span style="{{ fieldLabel }}">Public email</span>
+                <input type="text" value="studio@brandname.com" style="{{ inputStyle }}">
+              </label>
+              <label style="display:flex; flex-direction:column; gap:8px">
+                <span style="{{ fieldLabel }}">Showroom address</span>
+                <textarea rows="3" style="{{ textareaStyle }}">352 North Coast Highway, Suite 2
+Laguna Beach, CA 92651</textarea>
+              </label>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:14px">
+              <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:rgba(23,20,15,0.6)">Commerce</span>
+              <sc-for list="{{ toggles }}" as="t" hint-placeholder-count="5">
+                <button onClick="{{ t.toggle }}" style="{{ toggleRow }}">
+                  <span style="display:flex; flex-direction:column; gap:4px; text-align:left">
+                    <span style="font-size:13px">{{ t.label }}</span>
+                    <span style="font-size:11px; line-height:1.5; color:rgba(23,20,15,0.6)">{{ t.note }}</span>
+                  </span>
+                  <span style="{{ t.track }}"><span style="{{ t.knob }}"></span></span>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+          <div style="padding:28px; display:flex; flex-direction:column; gap:26px">
+            <div style="display:flex; flex-direction:column; gap:14px">
+              <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:rgba(23,20,15,0.6)">Hold policy</span>
+              <label style="display:flex; flex-direction:column; gap:8px">
+                <span style="{{ fieldLabel }}">Reservation window (minutes)</span>
+                <input type="text" value="60" style="{{ inputStyle }}">
+              </label>
+              <span style="font-size:12px; line-height:1.65; color:rgba(23,20,15,0.65)">One-of-a-kind pieces are held in the bag for this long, then returned to the catalogue. Enforced on the server.</span>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:14px">
+              <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:rgba(23,20,15,0.6)">Team</span>
+              <sc-for list="{{ team }}" as="m" hint-placeholder-count="3">
+                <div style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding:12px 0; border-bottom:1px solid rgba(23,20,15,0.1)">
+                  <span style="display:flex; align-items:center; gap:11px">
+                    <span style="{{ m.avatar }}">{{ m.initials }}</span>
+                    <span style="display:flex; flex-direction:column; gap:3px">
+                      <span style="font-size:13px">{{ m.name }}</span>
+                      <span style="font-size:11px; color:rgba(23,20,15,0.58)">{{ m.email }}</span>
+                    </span>
+                  </span>
+                  <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:rgba(23,20,15,0.6)">{{ m.role }}</span>
+                </div>
+              </sc-for>
+              <button onClick="{{ noop }}" style="{{ ghostBtn }}">Invite a collaborator</button>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+    </div>
+  </main>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1600,&quot;height&quot;:1000}}">
+class Component extends DCLogic {
+  state = {
+    view: "dashboard",
+    productFilter: "All",
+    orderFilter: "All",
+    customerFilter: "All",
+    chatFilter: "Open",
+    thread: 0,
+    availability: "unique",
+    sizes: ["6\u00bd"],
+    saved: false,
+    fulfilled: false,
+    resolved: false,
+    settings: { holds: true, wire: true, intl: true, chat: true, waitlist: false }
+  };
+
+  // shared style helpers
+  get ink() { return "#17140F"; }
+
+  pill(kind) {
+    const map = {
+      good: { bg: "rgba(74,103,65,0.13)", fg: "#3D5A35" },
+      warn: { bg: "rgba(158,116,42,0.15)", fg: "#7A5716" },
+      bad:  { bg: "rgba(138,59,46,0.13)", fg: "#8A3B2E" },
+      mute: { bg: "rgba(23,20,15,0.07)", fg: "rgba(23,20,15,0.7)" }
+    }[kind];
+    return {
+      fontFamily: "'IBM Plex Mono',monospace", fontSize: 10, letterSpacing: "0.1em",
+      textTransform: "uppercase", padding: "5px 9px", background: map.bg, color: map.fg,
+      justifySelf: "start", whiteSpace: "nowrap"
+    };
+  }
+
+  dot(kind) {
+    const c = { good: "#4A6741", warn: "#9E742A", bad: "#8A3B2E", mute: "rgba(23,20,15,0.3)" }[kind];
+    return { width: 7, height: 7, borderRadius: "50%", background: c, flexShrink: 0 };
+  }
+
+  chip(active) {
+    return {
+      fontFamily: "'Karla',sans-serif", fontSize: 12, letterSpacing: "0.06em",
+      padding: "8px 14px", cursor: "pointer", whiteSpace: "nowrap",
+      background: active ? this.ink : "transparent",
+      color: active ? "#F5F2EC" : "rgba(23,20,15,0.75)",
+      border: active ? "1px solid " + this.ink : "1px solid rgba(23,20,15,0.2)"
+    };
+  }
+
+  avatar(initials) {
+    return {
+      width: 30, height: 30, background: "rgba(23,20,15,0.08)", display: "flex",
+      alignItems: "center", justifyContent: "center", flexShrink: 0,
+      fontFamily: "'IBM Plex Mono',monospace", fontSize: 10, letterSpacing: "0.04em"
+    };
+  }
+
+  go(view) { return () => this.setState({ view }); }
+
+  renderVals() {
+    const v = this.state.view;
+    const navItems = [
+      ["dashboard", "Dashboard", ""],
+      ["products", "Pieces", "12"],
+      ["orders", "Orders", "3"],
+      ["inventory", "Inventory", ""],
+      ["customers", "Customers", ""],
+      ["chat", "Live chat", "2"],
+      ["settings", "Settings", ""]
+    ];
+
+    const titles = {
+      dashboard: ["Dashboard", "Thursday, 6 August 2026"],
+      products: ["Pieces", "12 live \u00b7 3 drafts \u00b7 4 archived"],
+      productEdit: ["Sweet Pea Ring", "A\u201401 \u00b7 last edited 2 days ago"],
+      orders: ["Orders", "9 this month \u00b7 $54,300"],
+      orderDetail: ["Order #4419", "Eleanor Whitfield"],
+      inventory: ["Inventory", "Loose stone, metal and heirloom stock"],
+      customers: ["Customers", "148 records"],
+      chat: ["Live chat", "2 open \u00b7 avg reply 4 min"],
+      settings: ["Settings", "Studio, commerce and team"]
+    };
+
+    const actions = {
+      dashboard: "New piece", products: "New piece", productEdit: "Save changes",
+      orders: "Record an order", orderDetail: "Mark dispatched",
+      inventory: "Log a purchase", customers: "Add customer",
+      chat: "New conversation", settings: "Save settings"
+    };
+
+    const btn = (bg, fg, border) => ({
+      fontFamily: "'Karla',sans-serif", fontSize: 11, letterSpacing: "0.16em",
+      textTransform: "uppercase", padding: "11px 18px", cursor: "pointer",
+      background: bg, color: fg, border: "1px solid " + border
+    });
+
+    const rowGrid = cols => ({
+      display: "grid", gridTemplateColumns: cols, gap: 16, alignItems: "center",
+      padding: "14px 28px", background: "transparent",
+      borderWidth: 0, borderStyle: "none",
+      cursor: "pointer", textAlign: "left", font: "inherit", color: "inherit", width: "100%",
+      borderBottom: "1px solid rgba(23,20,15,0.09)"
+    });
+
+    const allProducts = [
+      { name: "Sweet Pea Ring", ref: "A\u201401", material: "18k gold, tourmaline", category: "One of a Kind", status: "Live", stock: "1", price: "$14,800", views: "1,204", tone: "good" },
+      { name: "Meridian Cuff", ref: "A\u201402", material: "Rose gold, brushed", category: "One of a Kind", status: "Live", stock: "1", price: "$9,200", views: "868", tone: "good" },
+      { name: "Tideline Pendant", ref: "A\u201403", material: "White gold, opal", category: "One of a Kind", status: "Live", stock: "1", price: "$6,450", views: "1,533", tone: "good" },
+      { name: "Salt Flat Ring", ref: "A\u201406", material: "Palladium, rough diamond", category: "One of a Kind", status: "Reserved", stock: "1", price: "$11,200", views: "402", tone: "warn" },
+      { name: "Ember Band", ref: "A\u201404", material: "22k gold, spessartite", category: "One of a Kind", status: "Sold", stock: "0", price: "$4,900", views: "2,110", tone: "mute" },
+      { name: "Spectra Band", ref: "F\u201401", material: "Graduated gold, 3 mm", category: "Fine Jewelry", status: "Live", stock: "\u2014", price: "$2,450", views: "3,067", tone: "good" },
+      { name: "Cordon Chain", ref: "F\u201402", material: "18k gold, hand-linked", category: "Fine Jewelry", status: "Live", stock: "\u2014", price: "$5,600", views: "1,880", tone: "good" },
+      { name: "Wave Hoops", ref: "F\u201405", material: "18k gold, forged wire", category: "Fine Jewelry", status: "Draft", stock: "\u2014", price: "$2,200", views: "\u2014", tone: "mute" }
+    ];
+    const pf = this.state.productFilter;
+    const products = allProducts.filter(p =>
+      pf === "All" ? true : pf === "One of a Kind" || pf === "Fine Jewelry" ? p.category === pf : p.status === pf);
+
+    const allOrders = [
+      { id: "#4419", customer: "Eleanor Whitfield", email: "eleanor.w@email.com", piece: "Sweet Pea Ring", placed: "4 Aug", status: "Paid", total: "$15,910", tone: "good" },
+      { id: "#4418", customer: "Jonas Rehm", email: "j.rehm@email.com", piece: "Cordon Chain", placed: "3 Aug", status: "In studio", total: "$6,020", tone: "warn" },
+      { id: "#4417", customer: "Priya Raghavan", email: "priya.r@email.com", piece: "Spectra Band", placed: "2 Aug", status: "Dispatched", total: "$2,633", tone: "mute" },
+      { id: "#4416", customer: "Alain Moreau", email: "a.moreau@email.com", piece: "Tideline Pendant", placed: "31 Jul", status: "Enquiry", total: "\u2014", tone: "warn" },
+      { id: "#4415", customer: "Sadie Kwon", email: "sadie.k@email.com", piece: "Ember Band", placed: "29 Jul", status: "Delivered", total: "$5,268", tone: "mute" },
+      { id: "#4414", customer: "Thomas Byrne", email: "t.byrne@email.com", piece: "Petal Studs", placed: "27 Jul", status: "Refunded", total: "\u2212$2,129", tone: "bad" },
+      { id: "#4413", customer: "Marguerite Sull", email: "m.sull@email.com", piece: "Meridian Cuff", placed: "24 Jul", status: "Delivered", total: "$9,890", tone: "mute" },
+      { id: "#4412", customer: "Elias Norberg", email: "e.norberg@email.com", piece: "Dune Cuff", placed: "21 Jul", status: "Delivered", total: "$7,417", tone: "mute" },
+      { id: "#4411", customer: "Ruth Adeyemi", email: "r.adeyemi@email.com", piece: "Kelp Earrings", placed: "18 Jul", status: "Delivered", total: "$4,031", tone: "mute" }
+    ];
+    const of = this.state.orderFilter;
+    const orders = allOrders.filter(o => of === "All" || o.status === of);
+
+    const threadData = [
+      { name: "Marguerite Sull", when: "now", preview: "Is the opal in the Tideline pendant stable enough for daily wear?", tag: "Browsing \u00b7 $6,450", tone: "good" },
+      { name: "Visitor 8842", when: "6 min", preview: "Do you ship to the UK, and is the duty included?", tag: "New visitor", tone: "good" },
+      { name: "Jonas Rehm", when: "1 h", preview: "Thanks \u2014 the chain length is perfect.", tag: "Order #4418", tone: "mute" },
+      { name: "Priya Raghavan", when: "yesterday", preview: "Could I get it engraved before it ships?", tag: "Resolved", tone: "mute" },
+      { name: "Alain Moreau", when: "2 d", preview: "I would like to see the pendant in person on Saturday.", tag: "Appointment", tone: "mute" },
+      { name: "Visitor 8790", when: "3 d", preview: "Is the Sweet Pea ring resizable to a US 7?", tag: "Resolved", tone: "mute" }
+    ];
+
+    return {
+      nav: navItems.map(([key, label, badge]) => {
+        const active = v === key || (key === "products" && v === "productEdit") || (key === "orders" && v === "orderDetail");
+        return {
+          label, badge,
+          go: this.go(key),
+          style: {
+            display: "flex", alignItems: "center", justifyContent: "space-between",
+            gap: 10, padding: "11px 14px", cursor: "pointer", width: "100%",
+            fontFamily: "'Karla',sans-serif", fontSize: 13, letterSpacing: "0.04em",
+            border: "none", textAlign: "left",
+            background: active ? "rgba(237,234,227,0.12)" : "transparent",
+            color: active ? "#EDEAE3" : "rgba(237,234,227,0.68)"
+          },
+          badgeStyle: {
+            fontFamily: "'IBM Plex Mono',monospace", fontSize: 10,
+            color: badge ? "rgba(237,234,227,0.7)" : "transparent"
+          }
+        };
+      }),
+
+      pageTitle: titles[v][0],
+      pageMeta: titles[v][1],
+      primaryLabel: actions[v],
+      primaryStyle: btn(this.ink, "#F5F2EC", this.ink),
+      primaryAction: () => {
+        if (v === "products" || v === "dashboard") this.setState({ view: "productEdit" });
+        else if (v === "orders") this.setState({ view: "orderDetail" });
+        else this.setState({ saved: true });
+      },
+
+      isDashboard: v === "dashboard",
+      isProducts: v === "products",
+      isProductEdit: v === "productEdit",
+      isOrders: v === "orders",
+      isOrderDetail: v === "orderDetail",
+      isInventory: v === "inventory",
+      isCustomers: v === "customers",
+      isChat: v === "chat",
+      isSettings: v === "settings",
+
+      goProducts: this.go("products"),
+      goOrders: this.go("orders"),
+      goCustomers: this.go("customers"),
+      noop: () => {},
+
+      linkBtn: {
+        fontFamily: "'Karla',sans-serif", fontSize: 12, letterSpacing: "0.1em",
+        textTransform: "uppercase", background: "transparent", border: "none",
+        borderBottom: "1px solid rgba(23,20,15,0.35)", padding: "0 0 3px",
+        cursor: "pointer", color: "rgba(23,20,15,0.75)", width: "fit-content"
+      },
+      ghostBtn: btn("transparent", this.ink, "rgba(23,20,15,0.3)"),
+      ghostSmall: { ...btn("transparent", this.ink, "rgba(23,20,15,0.3)"), padding: "8px 14px", fontSize: 10 },
+      dangerBtn: btn("transparent", "#8A3B2E", "rgba(138,59,46,0.4)"),
+      chipGhost: {
+        fontFamily: "'Karla',sans-serif", fontSize: 11, padding: "7px 12px",
+        cursor: "pointer", background: "transparent", color: "rgba(23,20,15,0.75)",
+        border: "1px solid rgba(23,20,15,0.2)"
+      },
+      rowBtn: rowGrid("96px 1.4fr 1fr 100px 110px"),
+      productRowBtn: rowGrid("52px 1.6fr 1fr 108px 96px 110px 96px"),
+      orderRowBtn: rowGrid("100px 1.3fr 1.3fr 120px 120px 110px"),
+      fieldLabel: {
+        fontFamily: "'IBM Plex Mono',monospace", fontSize: 10, letterSpacing: "0.14em",
+        textTransform: "uppercase", color: "rgba(23,20,15,0.6)"
+      },
+      inputStyle: {
+        border: "1px solid rgba(23,20,15,0.22)", background: "transparent",
+        padding: "10px 12px", fontSize: 14, color: "#17140F", outline: "none", width: "100%"
+      },
+      bareInput: {
+        border: "none", background: "transparent", padding: "4px 0",
+        fontSize: 13, color: "#17140F", outline: "none", width: "100%"
+      },
+      textareaStyle: {
+        border: "1px solid rgba(23,20,15,0.22)", background: "transparent",
+        padding: "12px", fontSize: 13, lineHeight: 1.65, color: "#17140F",
+        outline: "none", resize: "vertical", width: "100%", fontFamily: "'Karla',sans-serif"
+      },
+
+      // dashboard
+      kpis: [
+        { label: "Revenue, 30 days", value: "$54,300", note: "9 orders \u00b7 up 18%" },
+        { label: "Pieces live", value: "12", note: "4 one-of-a-kind unsold" },
+        { label: "Awaiting dispatch", value: "3", note: "oldest placed 3 days ago" },
+        { label: "Open conversations", value: "2", note: "average reply 4 minutes" }
+      ],
+      recentOrders: allOrders.slice(0, 6).map(o => ({
+        ...o, open: this.go("orderDetail"), statusStyle: this.pill(o.tone)
+      })),
+      alertCount: "4 items",
+      alerts: [
+        { kind: "Hold expiring", body: "Salt Flat Ring has been held by a visitor for 52 minutes.", cta: "View piece", dot: this.dot("warn"), act: this.go("productEdit") },
+        { kind: "Enquiry unanswered", body: "Alain Moreau asked about a Saturday viewing two days ago.", cta: "Open chat", dot: this.dot("bad"), act: this.go("chat") },
+        { kind: "Low stock", body: "18k casting grain is down to 42 g.", cta: "Log a purchase", dot: this.dot("warn"), act: this.go("inventory") },
+        { kind: "Draft", body: "Wave Hoops has no photography and is not published.", cta: "Finish listing", dot: this.dot("mute"), act: this.go("productEdit") }
+      ],
+      bench: [
+        { name: "Cordon Chain \u2014 #4418", stage: "Setting", pct: 72 },
+        { name: "Commission \u2014 Byrne", stage: "Wax", pct: 38 },
+        { name: "Resize \u2014 #4413", stage: "Finish", pct: 90 }
+      ].map(b => ({ ...b, barStyle: { width: b.pct + "%", height: "100%", background: "#17140F" } })),
+
+      // products
+      productFilters: ["All", "One of a Kind", "Fine Jewelry", "Draft", "Sold"].map(label => ({
+        label, select: () => this.setState({ productFilter: label }),
+        style: this.chip(this.state.productFilter === label)
+      })),
+      productCount: products.length + " of " + allProducts.length,
+      products: products.map(p => ({ ...p, open: this.go("productEdit"), statusStyle: this.pill(p.tone) })),
+
+      // product edit
+      shots: ["FULL", "DETAIL", "ON BODY", "SCALE", "+ ADD"].map((label, i) => ({
+        label,
+        style: {
+          aspectRatio: "4/5", display: "flex", alignItems: "center", justifyContent: "center",
+          background: i === 4 ? "transparent" : "repeating-linear-gradient(135deg,#E7E1D6 0 6px,#DFD8CB 6px 12px)",
+          border: i === 4 ? "1px dashed rgba(23,20,15,0.3)" : "1px solid transparent"
+        }
+      })),
+      specRows: [
+        { k: "Reference", v: "A\u201401" },
+        { k: "Metal", v: "18k yellow gold, alloyed in studio" },
+        { k: "Stone", v: "4.2 ct green tourmaline, Brazil" },
+        { k: "Band", v: "2.4 mm, forged" },
+        { k: "Made", v: "Spring 2026, Laguna Beach" }
+      ],
+      availOptions: [
+        { key: "unique", label: "One of a kind", note: "Single item, disappears when sold" },
+        { key: "order", label: "Made to order", note: "6\u20138 weeks, unlimited" },
+        { key: "draft", label: "Draft", note: "Hidden from the storefront" }
+      ].map(a => {
+        const on = this.state.availability === a.key;
+        return {
+          ...a,
+          select: () => this.setState({ availability: a.key }),
+          style: {
+            display: "flex", alignItems: "center", justifyContent: "space-between",
+            gap: 12, padding: "13px 14px", cursor: "pointer", width: "100%",
+            fontFamily: "'Karla',sans-serif", textAlign: "left",
+            background: on ? "rgba(23,20,15,0.05)" : "transparent",
+            border: "1px solid " + (on ? "#17140F" : "rgba(23,20,15,0.18)"),
+            color: "#17140F"
+          },
+          mark: {
+            width: 9, height: 9, borderRadius: "50%", flexShrink: 0,
+            background: on ? "#17140F" : "transparent",
+            border: "1px solid " + (on ? "#17140F" : "rgba(23,20,15,0.35)")
+          }
+        };
+      }),
+      sizeChips: ["5", "5\u00bd", "6", "6\u00bd", "7", "7\u00bd"].map(label => {
+        const on = this.state.sizes.includes(label);
+        return {
+          label,
+          select: () => this.setState(s => ({
+            sizes: on ? s.sizes.filter(x => x !== label) : [...s.sizes, label]
+          })),
+          style: { ...this.chip(on), fontSize: 12, padding: "8px 13px" }
+        };
+      }),
+      activity: [
+        { when: "2 d ago", what: "Price changed from $13,900 to $14,800" },
+        { when: "6 d ago", what: "Photography replaced (4 frames)" },
+        { when: "12 d ago", what: "Published to the storefront" },
+        { when: "3 wk ago", what: "Created from bench record B\u2014118" }
+      ],
+      saveLabel: this.state.saved ? "Saved" : "Save changes",
+      saveStyle: this.state.saved
+        ? btn("transparent", this.ink, this.ink)
+        : btn(this.ink, "#F5F2EC", this.ink),
+      save: () => this.setState(s => ({ saved: !s.saved })),
+
+      // orders
+      orderFilters: ["All", "Enquiry", "Paid", "In studio", "Dispatched", "Refunded"].map(label => ({
+        label, select: () => this.setState({ orderFilter: label }),
+        style: this.chip(this.state.orderFilter === label)
+      })),
+      orderCount: orders.length + " of " + allOrders.length,
+      orders: orders.map(o => ({ ...o, open: this.go("orderDetail"), statusStyle: this.pill(o.tone) })),
+
+      // order detail
+      bigStatus: { ...this.pill("good"), fontSize: 11, padding: "8px 13px" },
+      orderTotals: [
+        { k: "Subtotal", v: "$14,800" },
+        { k: "Insured shipping", v: "Included" },
+        { k: "Tax (7.5%)", v: "$1,110" },
+        { k: "Total paid", v: "$15,910" }
+      ],
+      timeline: [
+        { when: "4 Aug, 09:12", what: "Order placed and payment captured" },
+        { when: "4 Aug, 09:12", what: "Piece marked sold, removed from the catalogue" },
+        { when: "4 Aug, 11:40", what: "Engraving confirmed by email \u2014 \u201cfor E, 2026\u201d" },
+        { when: "5 Aug, 16:05", what: "Final polish and photograph for the archive" }
+      ],
+      fulfilLabel: this.state.fulfilled ? "Dispatched \u2014 label printed" : "Mark dispatched",
+      fulfilStyle: this.state.fulfilled
+        ? btn("transparent", this.ink, this.ink)
+        : btn(this.ink, "#F5F2EC", this.ink),
+      fulfil: () => this.setState(s => ({ fulfilled: !s.fulfilled })),
+      customerStats: [
+        { k: "Orders", v: "4" },
+        { k: "Lifetime value", v: "$38,240" },
+        { k: "Last purchase", v: "4 Aug 2026" }
+      ],
+
+      // inventory
+      invKpis: [
+        { label: "Stone on hand", value: "34" },
+        { label: "Metal value", value: "$41,600" },
+        { label: "Held for commissions", value: "6" },
+        { label: "Below reorder point", value: "2" }
+      ],
+      inventory: [
+        { name: "Green tourmaline, 4.2 ct", ref: "S\u2014220", origin: "Brazil \u00b7 Idar cut", acquired: "Mar 2021", qty: "1", cost: "$3,100", status: "Set", tone: "mute" },
+        { name: "Australian opal, 6.1 ct", ref: "S\u2014241", origin: "Lightning Ridge", acquired: "Nov 2023", qty: "1", cost: "$2,450", status: "Set", tone: "mute" },
+        { name: "Spessartite garnet, 3.4 ct", ref: "S\u2014258", origin: "Nigeria", acquired: "Feb 2025", qty: "2", cost: "$1,880", status: "Loose", tone: "good" },
+        { name: "Rough diamond, 1.9 ct", ref: "S\u2014263", origin: "Botswana \u00b7 traced", acquired: "May 2025", qty: "1", cost: "$4,700", status: "Reserved", tone: "warn" },
+        { name: "Seed pearl, strand", ref: "S\u2014266", origin: "Japan", acquired: "Jun 2025", qty: "18", cost: "$640", status: "Loose", tone: "good" },
+        { name: "18k casting grain", ref: "M\u2014012", origin: "Recycled \u00b7 Hoover", acquired: "Jul 2026", qty: "42 g", cost: "$3,180", status: "Low", tone: "bad" },
+        { name: "22k sheet, 0.8 mm", ref: "M\u2014018", origin: "Rolled in studio", acquired: "Jun 2026", qty: "180 g", cost: "$14,900", status: "In stock", tone: "good" },
+        { name: "Heirloom \u2014 Byrne band", ref: "H\u2014004", origin: "Client metal", acquired: "Jul 2026", qty: "1", cost: "\u2014", status: "Client owned", tone: "mute" }
+      ].map(i => ({ ...i, statusStyle: this.pill(i.tone) })),
+
+      // customers
+      customerFilters: ["All", "Repeat buyers", "Commission clients", "Enquiries only"].map(label => ({
+        label, select: () => this.setState({ customerFilter: label }),
+        style: this.chip(this.state.customerFilter === label)
+      })),
+      customerCount: "148 records",
+      customers: [
+        { name: "Eleanor Whitfield", initials: "EW", email: "eleanor.w@email.com", location: "San Francisco, CA", orders: "4", lifetime: "$38,240", lastSeen: "today", note: "Prefers warm gold; ring size 6\u00bd" },
+        { name: "Marguerite Sull", initials: "MS", email: "m.sull@email.com", location: "London, UK", orders: "2", lifetime: "$16,340", lastSeen: "today", note: "In chat now about the Tideline pendant" },
+        { name: "Jonas Rehm", initials: "JR", email: "j.rehm@email.com", location: "Berlin, DE", orders: "3", lifetime: "$19,720", lastSeen: "1 h", note: "Chain lengths run long \u2014 20 in" },
+        { name: "Priya Raghavan", initials: "PR", email: "priya.r@email.com", location: "Austin, TX", orders: "1", lifetime: "$2,633", lastSeen: "yesterday", note: "First order, engraving requested" },
+        { name: "Alain Moreau", initials: "AM", email: "a.moreau@email.com", location: "Lyon, FR", orders: "0", lifetime: "\u2014", lastSeen: "2 d", note: "Wants a Saturday viewing" },
+        { name: "Sadie Kwon", initials: "SK", email: "sadie.k@email.com", location: "Seoul, KR", orders: "2", lifetime: "$10,168", lastSeen: "1 wk", note: "Bought for a wedding anniversary" },
+        { name: "Thomas Byrne", initials: "TB", email: "t.byrne@email.com", location: "Dublin, IE", orders: "1", lifetime: "\u2014", lastSeen: "2 wk", note: "Heirloom rework in progress" },
+        { name: "Ruth Adeyemi", initials: "RA", email: "r.adeyemi@email.com", location: "Lagos, NG", orders: "1", lifetime: "$4,031", lastSeen: "3 wk", note: "Asked about a matching cuff" }
+      ].map(c => ({ ...c, avatar: this.avatar(c.initials) })),
+
+      // chat
+      chatFilters: ["Open", "Mine", "Resolved"].map(label => ({
+        label, select: () => this.setState({ chatFilter: label }),
+        style: { ...this.chip(this.state.chatFilter === label), fontSize: 11, padding: "7px 12px" }
+      })),
+      threads: threadData.map((t, i) => ({
+        ...t,
+        open: () => this.setState({ thread: i }),
+        dot: this.dot(t.tone),
+        style: {
+          display: "flex", flexDirection: "column", gap: 7, padding: "14px 18px",
+          cursor: "pointer", width: "100%", textAlign: "left", font: "inherit",
+          color: "inherit", border: "none",
+          borderBottom: "1px solid rgba(23,20,15,0.09)",
+          borderLeft: "2px solid " + (this.state.thread === i ? "#17140F" : "transparent"),
+          background: this.state.thread === i ? "rgba(23,20,15,0.04)" : "transparent"
+        },
+        tagStyle: {
+          fontFamily: "'IBM Plex Mono',monospace", fontSize: 10, letterSpacing: "0.1em",
+          color: "rgba(23,20,15,0.55)"
+        }
+      })),
+      messages: [
+        { from: "them", body: "Hello \u2014 I have been looking at the Tideline pendant for a while.", meta: "Marguerite \u00b7 11:02" },
+        { from: "them", body: "Is the opal stable enough to wear every day? I am hard on jewelry.", meta: "Marguerite \u00b7 11:02" },
+        { from: "me", body: "It is a solid Lightning Ridge stone, not a doublet, set in a closed bezel \u2014 so it is well protected. I wear one daily.", meta: "You \u00b7 11:05" },
+        { from: "me", body: "The only thing I would avoid is a lot of hot water on it. I can send a short video of it in daylight if that helps.", meta: "You \u00b7 11:05" },
+        { from: "them", body: "That would be lovely. And could it go on an 18 inch chain instead?", meta: "Marguerite \u00b7 11:07" }
+      ].map(m => {
+        const mine = m.from === "me";
+        return {
+          ...m,
+          wrap: {
+            display: "flex", flexDirection: "column", gap: 6, maxWidth: 440,
+            alignSelf: mine ? "flex-end" : "flex-start",
+            alignItems: mine ? "flex-end" : "flex-start"
+          },
+          bubble: {
+            padding: "13px 16px", fontSize: 14, lineHeight: 1.6,
+            background: mine ? "#17140F" : "rgba(23,20,15,0.06)",
+            color: mine ? "#F5F2EC" : "#17140F"
+          }
+        };
+      }),
+      canned: [
+        { label: "Shipping & duties" }, { label: "Sizing help" }, { label: "Book a visit" }
+      ].map(c => ({ ...c, use: () => {} })),
+      resolveLabel: this.state.resolved ? "Resolved" : "Resolve",
+      resolveStyle: this.state.resolved
+        ? { ...btn("transparent", this.ink, this.ink), padding: "8px 14px", fontSize: 10 }
+        : { ...btn(this.ink, "#F5F2EC", this.ink), padding: "8px 14px", fontSize: 10 },
+      resolveChat: () => this.setState(s => ({ resolved: !s.resolved })),
+      chatInput: {
+        flex: 1, border: "1px solid rgba(23,20,15,0.22)", background: "transparent",
+        padding: "11px 13px", fontSize: 14, lineHeight: 1.6, color: "#17140F",
+        outline: "none", resize: "none", fontFamily: "'Karla',sans-serif"
+      },
+      sendStyle: btn(this.ink, "#F5F2EC", this.ink),
+      visitorFacts: [
+        { k: "Location", v: "London, UK" },
+        { k: "Local time", v: "19:07" },
+        { k: "Customer", v: "2 orders" },
+        { k: "Device", v: "iPhone \u00b7 Safari" },
+        { k: "Came from", v: "Instagram" }
+      ],
+      pastChats: [
+        { when: "24 Jul", what: "Asked about the Meridian cuff sizing \u2014 purchased the same day." },
+        { when: "3 May", what: "Shipping question, UK duties. Resolved." },
+        { when: "11 Feb", what: "Asked whether commissions were open. Referred to the enquiry form." }
+      ],
+
+      // settings
+      toggles: [
+        { key: "holds", label: "Hold one-of-a-kind pieces in the bag", note: "Prevents two people buying the same piece" },
+        { key: "wire", label: "Offer payment by wire", note: "Shown on orders above $10,000" },
+        { key: "intl", label: "International shipping", note: "Insured, duties calculated at checkout" },
+        { key: "chat", label: "Live chat on the storefront", note: "Visible when you are marked available" },
+        { key: "waitlist", label: "Waitlist on sold pieces", note: "Collect interest in similar work" }
+      ].map(t => {
+        const on = this.state.settings[t.key];
+        return {
+          ...t,
+          toggle: () => this.setState(s => ({ settings: { ...s.settings, [t.key]: !s.settings[t.key] } })),
+          track: {
+            width: 38, height: 20, flexShrink: 0, display: "flex", alignItems: "center",
+            padding: 2, background: on ? "#17140F" : "rgba(23,20,15,0.16)",
+            justifyContent: on ? "flex-end" : "flex-start"
+          },
+          knob: { width: 16, height: 16, background: on ? "#F5F2EC" : "#F5F2EC" }
+        };
+      }),
+      toggleRow: {
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+        gap: 16, padding: "13px 0", cursor: "pointer", width: "100%",
+        background: "transparent", border: "none",
+        borderBottom: "1px solid rgba(23,20,15,0.1)",
+        fontFamily: "'Karla',sans-serif", color: "#17140F", textAlign: "left"
+      },
+      team: [
+        { name: "The Designer", initials: "AN", email: "studio@brandname.com", role: "Owner" },
+        { name: "Studio Manager", initials: "SM", email: "hello@brandname.com", role: "Admin" },
+        { name: "Bench Assistant", initials: "BA", email: "bench@brandname.com", role: "Limited" }
+      ].map(m => ({ ...m, avatar: this.avatar(m.initials) }))
+    };
+  }
+}
+
+</script>
+</body>
+</html>

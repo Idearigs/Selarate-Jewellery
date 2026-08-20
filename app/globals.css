@@ -1,0 +1,275 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   Design tokens — transcribed from README.md §Design Tokens.
+   This file is the single source of truth. Do not hardcode hexes in components.
+   --------------------------------------------------------------------------- */
+
+@theme {
+  /* Color ------------------------------------------------------------------
+     Only four storefront colors exist. Every tint is an *alpha of ink*, never a
+     gray — use Tailwind's opacity modifier: text-ink/64, border-ink/12.
+     There is deliberately NO accent color on this direction. */
+  --color-paper: #f5f2ec;
+  --color-paper-alt: #ebe6dc;
+  --color-ink: #17140f;
+  /* The counterpart to ink: what text becomes on an ink surface. Already the
+     admin sidebar colour and the flipped focus ring below, both of which held
+     it as a literal. Named here so the footer cannot drift from them. */
+  --color-bone: #edeae3;
+  --color-error: #8a3b2e;
+
+  /* Admin-only status tones. NEVER import these into storefront components. */
+  --color-good-fill: rgb(74 103 65 / 0.13);
+  --color-good-ink: #3d5a35;
+  --color-warn-fill: rgb(158 116 42 / 0.15);
+  --color-warn-ink: #7a5716;
+  --color-bad-fill: rgb(138 59 46 / 0.13);
+  --color-bad-ink: #8a3b2e;
+  --color-mute-fill: rgb(23 20 15 / 0.07);
+  --color-mute-ink: rgb(23 20 15 / 0.7);
+
+  /* Typography -------------------------------------------------------------
+     Marcellus 400 is the ONLY display weight. Karla 300/400/500 for body/UI.
+     IBM Plex Mono 400 for labels, specs, eyebrows, IDs, figures and dates. */
+  --font-display: var(--font-marcellus), serif;
+  --font-body: var(--font-karla), sans-serif;
+  --font-mono: var(--font-plex-mono), monospace;
+
+  /* Semantic type scale. Desktop values; the -m variants are the 390px values.
+     Sizes carry their own line-height and tracking so call sites stay honest. */
+  --text-hero: 4.875rem; /* 78px */
+  --text-hero--line-height: 1.02;
+  --text-hero--letter-spacing: -0.01em;
+  --text-hero-m: 2.625rem; /* 42px */
+  --text-hero-m--line-height: 1.06;
+
+  --text-title: 3.875rem; /* 62px */
+  --text-title--line-height: 1.05;
+  --text-title-m: 2.25rem; /* 36px */
+  --text-title-m--line-height: 1.06;
+
+  --text-section: 2.375rem; /* 38px */
+  --text-section--line-height: 1.2;
+  --text-section-m: 1.75rem; /* 28px */
+  --text-section-m--line-height: 1.2;
+
+  --text-piece: 1.1875rem; /* 19px — product name on a card */
+  --text-piece--line-height: 1.3;
+
+  --text-body: 1rem; /* 16px */
+  --text-body--line-height: 1.75;
+  --text-body-sm: 0.8125rem; /* 13px */
+  --text-body-sm--line-height: 1.7;
+
+  --text-nav: 0.75rem; /* 12px */
+  --text-nav--letter-spacing: 0.16em;
+
+  --text-label: 0.6875rem; /* 11px — mono eyebrows, spec keys, table headers */
+  --text-label--letter-spacing: 0.2em;
+
+  --text-button: 0.6875rem; /* 11px */
+  --text-button--letter-spacing: 0.24em;
+
+  /* Motion — subtle fades and slow reveals. Nothing bouncy, no parallax. */
+  --ease-reveal: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  /* Hard resets on scales this design does not use. Declaring them `initial`
+     deletes the utilities entirely, so `rounded-lg` or `shadow-md` become
+     build errors rather than silent violations of the design. */
+  --radius-*: initial;
+  --shadow-*: initial;
+  --inset-shadow-*: initial;
+  --drop-shadow-*: initial;
+  --text-shadow-*: initial;
+}
+
+/* ---------------------------------------------------------------------------
+   Base
+   --------------------------------------------------------------------------- */
+
+@layer base {
+  /* Borders are always 1px and always an ink alpha. This is the default. */
+  *,
+  ::after,
+  ::before {
+    border-color: --alpha(var(--color-ink) / 12%);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* No icons anywhere in this design — every control is a word. Links carry
+     their meaning through the underline, so reset the default and let
+     components opt in. */
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Focus ring.
+
+   Radius is 0 everywhere, so a ring would look wrong: a square 1px outline with
+   an offset, visible on both paper and ink surfaces.
+
+   Deliberately UNLAYERED. Unlayered styles beat every @layer, so this cannot be
+   overridden by a utility — inside `@layer base` the colour lost to
+   `currentColor`, which on a 60%-ink link produced a washed-out ring that fails
+   contrast. Focus visibility is not something a utility class should be able to
+   weaken by accident.
+
+   Longhands rather than the `outline` shorthand, for the same reason: a var()
+   colour in the shorthand silently falls back to currentColor.
+   --------------------------------------------------------------------------- */
+
+:focus-visible {
+  outline-width: 1px;
+  outline-style: solid;
+  outline-color: #17140f;
+  outline-offset: 3px;
+}
+
+/* On the ink sidebar an ink ring is invisible; flip it to bone. */
+.bg-ink :focus-visible {
+  outline-color: #edeae3;
+}
+
+/* ---------------------------------------------------------------------------
+   Page margin.
+
+   Content is NOT centred in a max-width container. Sections run full width and
+   the margin is applied per-section: 56px desktop, 20px mobile (tablet
+   interpolates). Every top-level section uses `page-x`.
+   --------------------------------------------------------------------------- */
+
+/* Rows that scroll sideways on a phone — filter chips, category tabs.
+   The scrollbar is a horizontal rule in a design whose only horizontal rules
+   are structural hairlines, so it reads as a stray border under the chips.
+   Scrolling itself is untouched; only the bar is hidden. */
+@utility scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@utility page-x {
+  padding-inline: 20px;
+  @media (width >= 768px) {
+    padding-inline: 40px;
+  }
+  @media (width >= 1280px) {
+    padding-inline: 56px;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Section reveal — fade + 12px rise, 600ms.
+   Fired by IntersectionObserver at ~15% visibility, once per element.
+   See components/ui/reveal.tsx.
+   --------------------------------------------------------------------------- */
+
+@layer components {
+  .reveal {
+    opacity: 0;
+    transform: translateY(12px);
+    transition:
+      opacity 600ms var(--ease-reveal),
+      transform 600ms var(--ease-reveal);
+  }
+
+  .reveal[data-shown="true"] {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Mobile navigation drawer.
+
+     max-height animated to a height the header MEASURES (--drawer-h) rather
+     than a guessed cap. A fixed cap has to sit above the real height, so the
+     tail of the animation runs after the panel has already stopped moving —
+     and if the menu ever outgrows the guess it silently clips. 26rem remains
+     only as the value used before the first measurement lands.
+
+     --ease-reveal is not used here. It is tuned for a 12px rise and is steep
+     enough that a 350px move is essentially over in a third of its duration;
+     this curve decelerates across the whole distance instead. */
+  .drawer {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition:
+      max-height 380ms cubic-bezier(0.33, 1, 0.68, 1),
+      opacity 240ms linear;
+  }
+
+  .drawer[data-open="true"] {
+    max-height: var(--drawer-h, 26rem);
+    opacity: 1;
+  }
+
+  /* Links cascade in behind the panel rather than arriving with it. */
+  .drawer-item {
+    opacity: 0;
+    transform: translateY(-6px);
+    transition:
+      opacity 300ms var(--ease-reveal),
+      transform 300ms var(--ease-reveal);
+  }
+
+  .drawer[data-open="true"] .drawer-item {
+    opacity: 1;
+    transform: none;
+    transition-delay: calc(var(--i, 0) * 45ms);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    transform: none;
+    transition: opacity 200ms linear;
+  }
+
+  /* The drawer still needs a transition — not none — or the row height jumps
+     before the browser has laid the panel out. 1ms is imperceptible and keeps
+     the state change atomic. */
+  .drawer,
+  .drawer[data-open="true"] .drawer-item {
+    transition-duration: 1ms;
+    transition-delay: 0ms;
+  }
+
+  .drawer-item {
+    transform: none;
+  }
+
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}

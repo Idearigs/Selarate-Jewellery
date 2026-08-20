@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Prata&family=Karla:wght@300;400;500&family=Jost:wght@200;300;400&family=Work+Sans:wght@300;400;500&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #8C8C88; }
+  a { color: inherit; text-decoration: none; }
+  a:hover { color: inherit; }
+</style>
+</helmet>
+
+<section style="display:flex; flex-direction:column; gap:28px; padding:56px 56px 96px">
+  <div style="display:flex; align-items:baseline; gap:16px; font-family:'IBM Plex Mono',monospace; font-size:13px; letter-spacing:0.08em; color:#F2F1EE">
+    <span>TURN 1</span>
+    <span style="opacity:0.6">Three homepage directions &mdash; luxury, minimal, desktop. Reference: <a href="#1a" style="text-decoration:underline">1a</a> Atelier &middot; <a href="#1b" style="text-decoration:underline">1b</a> Vitrine &middot; <a href="#1c" style="text-decoration:underline">1c</a> Ledger</span>
+  </div>
+
+  <div style="display:flex; flex-wrap:wrap; align-items:flex-start; gap:56px">
+
+    <div id="1a" style="display:flex; flex-direction:column; gap:14px">
+      <div style="display:flex; align-items:center; gap:12px; font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.1em; color:#F2F1EE">
+        <span style="border:1px solid rgba(242,241,238,0.5); padding:4px 9px">1a</span>
+        <span style="opacity:0.75">ATELIER &mdash; warm bone, editorial asymmetry</span>
+      </div>
+
+      <div style="width:1440px; background:#F5F2EC; color:#17140F; font-family:'Karla',sans-serif; box-shadow:0 30px 80px rgba(0,0,0,0.28)">
+        <header style="display:flex; align-items:center; justify-content:space-between; padding:26px 56px; border-bottom:1px solid rgba(23,20,15,0.12)">
+          <nav style="display:flex; gap:34px; font-size:12px; letter-spacing:0.16em; text-transform:uppercase; font-weight:400">
+            <a href="#1a">One of a Kind</a>
+            <a href="#1a">Fine Jewelry</a>
+            <a href="#1a">The Atelier</a>
+          </nav>
+          <div style="font-family:'Marcellus',serif; font-size:23px; letter-spacing:0.34em; text-transform:uppercase">Brand Name</div>
+          <nav style="display:flex; gap:30px; font-size:12px; letter-spacing:0.16em; text-transform:uppercase">
+            <a href="#1a">Visit</a>
+            <a href="#1a">Account</a>
+            <a href="#1a">Bag (0)</a>
+          </nav>
+        </header>
+
+        <div style="display:grid; grid-template-columns:1.15fr 1fr; align-items:stretch">
+          <div style="padding:104px 64px 96px 56px; display:flex; flex-direction:column; justify-content:space-between; gap:64px">
+            <div style="display:flex; flex-direction:column; gap:28px">
+              <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:rgba(23,20,15,0.64)">No. 01 &mdash; Spring Editions</div>
+              <h1 style="margin:0; font-family:'Marcellus',serif; font-size:78px; line-height:1.02; font-weight:400; letter-spacing:-0.01em; text-wrap:pretty">Each piece<br>made once,<br>then never<br>again.</h1>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:26px; max-width:430px">
+              <p style="margin:0; font-size:16px; line-height:1.7; color:rgba(23,20,15,0.72); text-wrap:pretty">Hand-forged in gold and colored stone, one piece at a time. The studio releases a small number of finished works each season &mdash; when a piece is gone, it does not return.</p>
+              <a href="#1a" style="display:inline-flex; align-items:center; gap:14px; font-size:12px; letter-spacing:0.18em; text-transform:uppercase; border-bottom:1px solid #17140F; padding-bottom:9px; width:fit-content">Enter the collection <span style="font-size:15px">&rarr;</span></a>
+            </div>
+          </div>
+          <div style="position:relative; min-height:660px; background:repeating-linear-gradient(135deg,#E7E1D6 0 7px,#DFD8CB 7px 14px); display:flex; align-items:center; justify-content:center">
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.14em; color:rgba(23,20,15,0.55); background:#F5F2EC; padding:8px 12px">HERO &mdash; hand on ring, 4:5</span>
+          </div>
+        </div>
+
+        <div style="padding:104px 56px 0; display:flex; align-items:flex-end; justify-content:space-between; border-top:1px solid rgba(23,20,15,0.12)">
+          <h2 style="margin:0; padding-top:56px; font-family:'Marcellus',serif; font-size:38px; font-weight:400; letter-spacing:0.01em">Available Now</h2>
+          <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:rgba(23,20,15,0.64); padding-bottom:8px">Four pieces &mdash; each unique</div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:32px; padding:48px 56px 104px">
+          <sc-for list="{{ pieces }}" as="p" hint-placeholder-count="4">
+            <a href="#1a" style="display:flex; flex-direction:column; gap:18px">
+              <div style="aspect-ratio:4/5; background:repeating-linear-gradient(135deg,#E7E1D6 0 7px,#DFD8CB 7px 14px); display:flex; align-items:flex-end; justify-content:center; padding-bottom:16px">
+                <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.12em; color:rgba(23,20,15,0.64)">PRODUCT 4:5</span>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:7px">
+                <div style="font-family:'Marcellus',serif; font-size:19px">{{ p.name }}</div>
+                <div style="font-size:13px; letter-spacing:0.04em; color:rgba(23,20,15,0.55)">{{ p.material }}</div>
+                <div style="font-size:14px; letter-spacing:0.06em; padding-top:4px">{{ p.price }}</div>
+              </div>
+            </a>
+          </sc-for>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; background:#EBE6DC">
+          <div style="min-height:520px; background:repeating-linear-gradient(135deg,#E0D9CC 0 7px,#D7CFC0 7px 14px); display:flex; align-items:center; justify-content:center">
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.14em; color:rgba(23,20,15,0.55); background:#EBE6DC; padding:8px 12px">PORTRAIT &mdash; designer at bench</span>
+          </div>
+          <div style="padding:96px 72px; display:flex; flex-direction:column; gap:26px; justify-content:center">
+            <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:rgba(23,20,15,0.64)">The Maker</div>
+            <h2 style="margin:0; font-family:'Marcellus',serif; font-size:40px; line-height:1.18; font-weight:400; text-wrap:pretty">Twenty-five years at the same bench.</h2>
+            <p style="margin:0; font-size:16px; line-height:1.75; color:rgba(23,20,15,0.72); max-width:420px; text-wrap:pretty">Gemologist and goldsmith. Every stone is chosen by hand, every setting cut and finished in the studio.</p>
+            <a href="#1a" style="font-size:12px; letter-spacing:0.18em; text-transform:uppercase; border-bottom:1px solid #17140F; padding-bottom:9px; width:fit-content">Read the story</a>
+          </div>
+        </div>
+
+        <footer style="display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:40px; padding:88px 56px 56px; border-top:1px solid rgba(23,20,15,0.12)">
+          <div style="display:flex; flex-direction:column; gap:16px">
+            <div style="font-family:'Marcellus',serif; font-size:19px; letter-spacing:0.3em; text-transform:uppercase">Brand Name</div>
+            <p style="margin:0; font-size:13px; line-height:1.7; color:rgba(23,20,15,0.6); max-width:260px">Studio and showroom<br>By appointment</p>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:12px; font-size:13px; color:rgba(23,20,15,0.7)">
+            <div style="font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:rgba(23,20,15,0.64); margin-bottom:4px">Shop</div>
+            <a href="#1a">One of a Kind</a><a href="#1a">Fine Jewelry</a><a href="#1a">Gift Cards</a>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:12px; font-size:13px; color:rgba(23,20,15,0.7)">
+            <div style="font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:rgba(23,20,15,0.64); margin-bottom:4px">Studio</div>
+            <a href="#1a">About</a><a href="#1a">Visit</a><a href="#1a">Contact</a>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:12px; font-size:13px; color:rgba(23,20,15,0.7)">
+            <div style="font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:rgba(23,20,15,0.64); margin-bottom:4px">Care</div>
+            <a href="#1a">Sizing</a><a href="#1a">Shipping</a><a href="#1a">Repairs</a>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+    <div id="1b" style="display:flex; flex-direction:column; gap:14px">
+      <div style="display:flex; align-items:center; gap:12px; font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.1em; color:#F2F1EE">
+        <span style="border:1px solid rgba(242,241,238,0.5); padding:4px 9px">1b</span>
+        <span style="opacity:0.75">VITRINE &mdash; near-black gallery, centered</span>
+      </div>
+
+      <div style="width:1440px; background:#0C0C0B; color:#EDEAE3; font-family:'Jost',sans-serif; box-shadow:0 30px 80px rgba(0,0,0,0.4)">
+        <header style="display:flex; flex-direction:column; align-items:center; gap:22px; padding:34px 56px 26px">
+          <div style="font-family:'Cormorant Garamond',serif; font-size:34px; font-weight:300; letter-spacing:0.42em; text-transform:uppercase; padding-left:0.42em">Brand Name</div>
+          <nav style="display:flex; gap:44px; font-size:11px; font-weight:300; letter-spacing:0.24em; text-transform:uppercase; color:rgba(237,234,227,0.75)">
+            <a href="#1b">Collection</a><a href="#1b">One of a Kind</a><a href="#1b">Atelier</a><a href="#1b">Visit</a><a href="#1b">Bag (0)</a>
+          </nav>
+        </header>
+
+        <div style="position:relative; height:720px; margin:0 56px; background:repeating-linear-gradient(135deg,#1A1917 0 8px,#141312 8px 16px); display:flex; align-items:center; justify-content:center">
+          <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.14em; color:rgba(237,234,227,0.5); border:1px solid rgba(237,234,227,0.2); padding:9px 13px">HERO &mdash; single jewel on black, 16:9</span>
+          <div style="position:absolute; left:0; right:0; bottom:64px; display:flex; flex-direction:column; align-items:center; gap:26px">
+            <h1 style="margin:0; font-family:'Cormorant Garamond',serif; font-size:92px; line-height:1; font-weight:300; font-style:italic; text-align:center">Singular by nature</h1>
+            <a href="#1b" style="font-size:11px; letter-spacing:0.26em; text-transform:uppercase; border:1px solid rgba(237,234,227,0.45); padding:15px 34px; backdrop-filter:blur(4px)" style-hover="background:#EDEAE3; color:#0C0C0B; border-color:#EDEAE3">View the collection</a>
+          </div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; align-items:center; gap:20px; padding:112px 56px 56px">
+          <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.24em; text-transform:uppercase; color:oklch(0.74 0.09 82)">Limited Editions</div>
+          <h2 style="margin:0; font-family:'Cormorant Garamond',serif; font-size:46px; font-weight:300; text-align:center">Four pieces, four owners</h2>
+          <p style="margin:0; max-width:520px; text-align:center; font-size:15px; font-weight:300; line-height:1.8; color:rgba(237,234,227,0.62); text-wrap:pretty">Every jewel is finished by hand in the studio and released once. Prices include lifetime care.</p>
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:24px; padding:24px 56px 112px">
+          <sc-for list="{{ pieces }}" as="p" hint-placeholder-count="4">
+            <a href="#1b" style="display:flex; flex-direction:column; gap:20px; padding:26px; border:1px solid rgba(237,234,227,0.12)" style-hover="border-color:oklch(0.74 0.09 82)">
+              <div style="aspect-ratio:1; background:repeating-linear-gradient(135deg,#1A1917 0 8px,#141312 8px 16px); display:flex; align-items:center; justify-content:center">
+                <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.12em; color:rgba(237,234,227,0.45)">PRODUCT 1:1</span>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:8px; align-items:center; text-align:center">
+                <div style="font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:300">{{ p.name }}</div>
+                <div style="font-size:11px; font-weight:300; letter-spacing:0.16em; text-transform:uppercase; color:rgba(237,234,227,0.5)">{{ p.material }}</div>
+                <div style="font-size:14px; font-weight:300; letter-spacing:0.08em; color:oklch(0.82 0.07 82); padding-top:6px">{{ p.price }}</div>
+              </div>
+            </a>
+          </sc-for>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0; border-top:1px solid rgba(237,234,227,0.12)">
+          <div style="padding:112px 80px; display:flex; flex-direction:column; gap:28px; justify-content:center">
+            <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.24em; text-transform:uppercase; color:oklch(0.74 0.09 82)">The Atelier</div>
+            <h2 style="margin:0; font-family:'Cormorant Garamond',serif; font-size:44px; line-height:1.2; font-weight:300; font-style:italic; text-wrap:pretty">Drawn, cast and set under one roof.</h2>
+            <p style="margin:0; font-size:15px; font-weight:300; line-height:1.85; color:rgba(237,234,227,0.62); max-width:430px; text-wrap:pretty">A gemologist and goldsmith of twenty-five years selects each stone, then builds the setting around it. Nothing is outsourced and nothing is repeated.</p>
+            <a href="#1b" style="font-size:11px; letter-spacing:0.26em; text-transform:uppercase; border-bottom:1px solid rgba(237,234,227,0.5); padding-bottom:10px; width:fit-content">Inside the studio</a>
+          </div>
+          <div style="min-height:560px; background:repeating-linear-gradient(135deg,#1A1917 0 8px,#141312 8px 16px); display:flex; align-items:center; justify-content:center">
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.14em; color:rgba(237,234,227,0.5); border:1px solid rgba(237,234,227,0.2); padding:9px 13px">BENCH &mdash; hands at work, 3:4</span>
+          </div>
+        </div>
+
+        <footer style="display:flex; flex-direction:column; align-items:center; gap:36px; padding:96px 56px 56px; border-top:1px solid rgba(237,234,227,0.12)">
+          <div style="font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:300; letter-spacing:0.4em; text-transform:uppercase; padding-left:0.4em">Brand Name</div>
+          <nav style="display:flex; gap:36px; font-size:11px; font-weight:300; letter-spacing:0.2em; text-transform:uppercase; color:rgba(237,234,227,0.65)">
+            <a href="#1b">Collection</a><a href="#1b">About</a><a href="#1b">Visit</a><a href="#1b">Care</a><a href="#1b">Shipping</a><a href="#1b">Contact</a>
+          </nav>
+          <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.1em; color:rgba(237,234,227,0.35)">&copy; 2026 &mdash; All pieces made by hand</div>
+        </footer>
+      </div>
+    </div>
+
+    <div id="1c" style="display:flex; flex-direction:column; gap:14px">
+      <div style="display:flex; align-items:center; gap:12px; font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.1em; color:#F2F1EE">
+        <span style="border:1px solid rgba(242,241,238,0.5); padding:4px 9px">1c</span>
+        <span style="opacity:0.75">LEDGER &mdash; alabaster, hairline catalog grid</span>
+      </div>
+
+      <div style="width:1440px; background:#EFEEEA; color:#1B1C1B; font-family:'Work Sans',sans-serif; box-shadow:0 30px 80px rgba(0,0,0,0.28)">
+        <header style="display:flex; align-items:center; justify-content:space-between; padding:22px 48px; border-bottom:1px solid #1B1C1B">
+          <div style="font-family:'Prata',serif; font-size:21px; letter-spacing:0.06em">Brand&nbsp;Name</div>
+          <nav style="display:flex; gap:40px; font-size:11px; font-weight:400; letter-spacing:0.2em; text-transform:uppercase">
+            <a href="#1c">Pieces</a><a href="#1c">Editions</a><a href="#1c">Studio</a><a href="#1c">Visit</a>
+          </nav>
+          <div style="display:flex; gap:26px; font-size:11px; letter-spacing:0.2em; text-transform:uppercase">
+            <a href="#1c">Search</a><a href="#1c">Bag&nbsp;(0)</a>
+          </div>
+        </header>
+
+        <div style="display:grid; grid-template-columns:repeat(12,1fr); border-bottom:1px solid #1B1C1B">
+          <div style="grid-column:span 5; padding:72px 48px; display:flex; flex-direction:column; justify-content:space-between; gap:56px; border-right:1px solid #1B1C1B">
+            <h1 style="margin:0; font-family:'Prata',serif; font-size:64px; line-height:1.08; font-weight:400; text-wrap:pretty">A catalogue of things that exist only once.</h1>
+            <div style="display:flex; flex-direction:column; gap:22px">
+              <div style="display:flex; gap:0; border-top:1px solid rgba(27,28,27,0.25)">
+                <div style="flex:1; padding:14px 0; font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:rgba(27,28,27,0.64)">Edition</div>
+                <div style="flex:1; padding:14px 0; font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.14em; text-transform:uppercase">Spring 2026</div>
+              </div>
+              <div style="display:flex; gap:0; border-top:1px solid rgba(27,28,27,0.25)">
+                <div style="flex:1; padding:14px 0; font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:rgba(27,28,27,0.64)">Available</div>
+                <div style="flex:1; padding:14px 0; font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.14em; text-transform:uppercase">Four pieces</div>
+              </div>
+              <a href="#1c" style="margin-top:10px; display:inline-flex; align-items:center; justify-content:space-between; border:1px solid #1B1C1B; padding:17px 22px; font-size:11px; letter-spacing:0.22em; text-transform:uppercase; width:300px" style-hover="background:#1B1C1B; color:#EFEEEA">Browse the catalogue <span>&rarr;</span></a>
+            </div>
+          </div>
+          <div style="grid-column:span 7; min-height:640px; background:repeating-linear-gradient(135deg,#E2E1DB 0 7px,#D9D8D1 7px 14px); display:flex; align-items:center; justify-content:center">
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.14em; color:rgba(27,28,27,0.64); background:#EFEEEA; padding:8px 12px">HERO &mdash; wide still life, 3:2</span>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(3,1fr)">
+          <sc-for list="{{ pieces3 }}" as="p" hint-placeholder-count="3">
+            <a href="#1c" style="display:flex; flex-direction:column; border-right:1px solid #1B1C1B; border-bottom:1px solid #1B1C1B" style-hover="background:#E7E6E1">
+              <div style="display:flex; align-items:baseline; justify-content:space-between; padding:18px 24px; border-bottom:1px solid rgba(27,28,27,0.2); font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.14em; text-transform:uppercase">
+                <span>{{ p.ref }}</span><span style="color:rgba(27,28,27,0.64)">1 of 1</span>
+              </div>
+              <div style="aspect-ratio:1; background:repeating-linear-gradient(135deg,#E2E1DB 0 7px,#D9D8D1 7px 14px); display:flex; align-items:center; justify-content:center">
+                <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.12em; color:rgba(27,28,27,0.5)">PRODUCT 1:1</span>
+              </div>
+              <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:20px; padding:24px">
+                <div style="display:flex; flex-direction:column; gap:6px">
+                  <div style="font-family:'Prata',serif; font-size:20px">{{ p.name }}</div>
+                  <div style="font-size:13px; color:rgba(27,28,27,0.6)">{{ p.material }}</div>
+                </div>
+                <div style="font-family:'IBM Plex Mono',monospace; font-size:13px; letter-spacing:0.04em">{{ p.price }}</div>
+              </div>
+            </a>
+          </sc-for>
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(12,1fr); border-bottom:1px solid #1B1C1B">
+          <div style="grid-column:span 4; min-height:440px; background:repeating-linear-gradient(135deg,#E2E1DB 0 7px,#D9D8D1 7px 14px); display:flex; align-items:center; justify-content:center; border-right:1px solid #1B1C1B">
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.14em; color:rgba(27,28,27,0.64); background:#EFEEEA; padding:8px 12px">STUDIO &mdash; 1:1</span>
+          </div>
+          <div style="grid-column:span 8; padding:80px 56px; display:flex; flex-direction:column; gap:24px; justify-content:center">
+            <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.22em; text-transform:uppercase; color:rgba(27,28,27,0.64)">Studio Note</div>
+            <h2 style="margin:0; font-family:'Prata',serif; font-size:36px; line-height:1.3; font-weight:400; max-width:640px; text-wrap:pretty">The catalogue is short on purpose. Four finished pieces is a season's honest output.</h2>
+            <a href="#1c" style="font-size:11px; letter-spacing:0.22em; text-transform:uppercase; border-bottom:1px solid #1B1C1B; padding-bottom:9px; width:fit-content">About the maker</a>
+          </div>
+        </div>
+
+        <footer style="display:grid; grid-template-columns:repeat(4,1fr); gap:0">
+          <div style="padding:48px; display:flex; flex-direction:column; gap:14px; border-right:1px solid rgba(27,28,27,0.2)">
+            <div style="font-family:'Prata',serif; font-size:18px">Brand&nbsp;Name</div>
+            <div style="font-size:13px; line-height:1.7; color:rgba(27,28,27,0.6)">Studio &amp; showroom<br>By appointment</div>
+          </div>
+          <div style="padding:48px; display:flex; flex-direction:column; gap:11px; font-size:13px; color:rgba(27,28,27,0.7); border-right:1px solid rgba(27,28,27,0.2)">
+            <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:rgba(27,28,27,0.64)">Shop</div>
+            <a href="#1c">Pieces</a><a href="#1c">Editions</a><a href="#1c">Gift cards</a>
+          </div>
+          <div style="padding:48px; display:flex; flex-direction:column; gap:11px; font-size:13px; color:rgba(27,28,27,0.7); border-right:1px solid rgba(27,28,27,0.2)">
+            <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:rgba(27,28,27,0.64)">Studio</div>
+            <a href="#1c">About</a><a href="#1c">Visit</a><a href="#1c">Contact</a>
+          </div>
+          <div style="padding:48px; display:flex; flex-direction:column; gap:11px; font-size:13px; color:rgba(27,28,27,0.7)">
+            <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:rgba(27,28,27,0.64)">Care</div>
+            <a href="#1c">Sizing</a><a href="#1c">Shipping</a><a href="#1c">Repairs</a>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1600,&quot;height&quot;:1000}}">
+class Component extends DCLogic {
+  renderVals() {
+    const pieces = [
+      { ref: "A—01", name: "Sweet Pea Ring", material: "18k yellow gold, tourmaline", price: "$14,800" },
+      { ref: "A—02", name: "Meridian Cuff", material: "Rose gold, brushed", price: "$9,200" },
+      { ref: "A—03", name: "Tideline Pendant", material: "White gold, opal", price: "$6,450" },
+      { ref: "A—04", name: "Ember Band", material: "22k gold, spessartite", price: "$4,900" }
+    ];
+    return { pieces, pieces3: pieces.slice(0, 3) };
+  }
+}
+
+</script>
+</body>
+</html>
