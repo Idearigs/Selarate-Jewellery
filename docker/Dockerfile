@@ -50,6 +50,11 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 
+# The migration SQL and its journal. `output: standalone` traces JavaScript
+# imports only, so these are not carried across on their own — and the server
+# applies them on boot (see migrateOnBoot in lib/db/index.ts).
+COPY --from=builder --chown=nextjs:nodejs /app/drizzle ./drizzle
+
 USER nextjs
 EXPOSE 3000
 

@@ -1,4 +1,5 @@
 import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
+import type { Sql as PostgresClient } from "postgres";
 import { env } from "@/lib/env";
 import * as schema from "./schema";
 
@@ -26,7 +27,50 @@ async function createPostgres(): Promise<Db> {
   const { drizzle } = await import("drizzle-orm/postgres-js");
   const postgres = (await import("postgres")).default;
   const client = postgres(env.DATABASE_URL!, { max: 10 });
-  return drizzle(client, { schema });
+  const db = drizzle(client, { schema });
+
+  if (process.env.MIGRATE_ON_BOOT !== "0") await migrateOnBoot(db, client);
+
+  return db;
+}
+
+/**
+ * Run pending migrations when the server starts.
+ *
+ * Platforms that build and run a Dockerfile for you — Coolify, Railway, Render
+ * — have no equivalent of the one-shot `migrate` service in
+ * docker/docker-compose.yml, so without this the schema is simply never
+ * created and every page 500s against an empty database.
+ *
+ * The advisory lock is what makes this safe to do on boot. Two containers
+ * starting together would otherwise both try to apply the same migration; the
+ * second would fail on an object that already exists and crash-loop. A session
+ * lock on a fixed key serialises them: the first migrates, the second waits and
+ * then finds nothing to do. The key is arbitrary but must never change.
+ *
+ * Set MIGRATE_ON_BOOT=0 to opt out where migrations run as their own deploy
+ * step, which is the better arrangement once there is more than one instance.
+ */
+async function migrateOnBoot(db: Db, client: PostgresClient) {
+  // A plain number, not a bigint literal: the driver binds this as int8 and
+  // the value sits inside Number.MAX_SAFE_INTEGER.
+  const LOCK_KEY = 8_147_213_905_442_117;
+
+  try {
+    const { migrate } = await import("drizzle-orm/postgres-js/migrator");
+    await client`select pg_advisory_lock(${LOCK_KEY})`;
+    try {
+      await migrate(db, { migrationsFolder: "./drizzle" });
+    } finally {
+      await client`select pg_advisory_unlock(${LOCK_KEY})`;
+    }
+  } catch (error) {
+    /* Loudly, then rethrow. A server that starts against a schema it does not
+       understand is worse than one that refuses to start: the healthcheck
+       would pass and it would take live traffic. */
+    console.error("[db] migration on boot failed:", error);
+    throw error;
+  }
 }
 
 /**
