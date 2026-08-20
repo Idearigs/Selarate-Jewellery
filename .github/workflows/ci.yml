@@ -33,8 +33,10 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
 
-      - name: Lint
-        run: npm run lint
+      # No lint step. ESLint has never been configured in this project, so
+      # `next lint` drops into an interactive setup prompt and would hang the
+      # runner. Configure ESLint first, then add the step back — a lint job
+      # that cannot run is worse than no lint job, because it reads as covered.
 
       # No database service is needed. The suite runs Postgres in-process via
       # PGlite, so it gets real Postgres semantics — FOR UPDATE, partial unique
