@@ -18,11 +18,30 @@ import { PREVIEW_COOKIE } from "@/lib/preview";
 
 export const dynamic = "force-dynamic";
 
+/**
+ * A redirect to a path on this same site.
+ *
+ * NOT `NextResponse.redirect(new URL(path, request.url))`. Behind a reverse
+ * proxy the server binds 0.0.0.0:3000, and `request.url` carries that bind
+ * address rather than the public host — so that form emitted
+ * `location: https://0.0.0.0:3000/` and the browser had nowhere to go. The
+ * cookie was set correctly on the very same response, which made it look like
+ * the gate was broken when only the redirect was.
+ *
+ * A relative Location is valid per RFC 7231 and resolved by the browser
+ * against whatever host it actually asked for. That is right in every
+ * environment — proxied, direct, custom domain, LAN address in dev — without
+ * having to reconstruct the origin from headers we may not be sent.
+ */
+function redirectTo(path: string) {
+  return new NextResponse(null, { status: 307, headers: { location: path } });
+}
+
 export async function GET(request: NextRequest) {
   // Off means launched: the gate is gone, so an old bookmark should just land
   // on the homepage rather than 404 or re-arm a cookie that does nothing.
   if (env.PREVIEW_MODE !== "1") {
-    return NextResponse.redirect(new URL("/", request.url));
+    return redirectTo("/");
   }
 
   if (env.PREVIEW_TOKEN) {
@@ -31,11 +50,11 @@ export async function GET(request: NextRequest) {
     // response confirms the path is real and worth attacking; the holding
     // page is what a stranger would have seen anyway.
     if (key !== env.PREVIEW_TOKEN) {
-      return NextResponse.redirect(new URL("/coming-soon", request.url));
+      return redirectTo("/coming-soon");
     }
   }
 
-  const response = NextResponse.redirect(new URL("/", request.url));
+  const response = redirectTo("/");
 
   response.cookies.set(PREVIEW_COOKIE, "1", {
     httpOnly: true,
