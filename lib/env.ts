@@ -49,6 +49,24 @@ const schema = z
     /** Auth. */
     AUTH_SECRET: requiredInProd("AUTH_SECRET"),
 
+    /**
+     * Pre-launch holding page. With this set, the storefront is replaced by
+     * "coming soon" for everyone except a visitor who has been through
+     * /preview, and the site is marked noindex so a crawler that arrives
+     * early does not bank the holding page as the homepage.
+     *
+     * Off unless explicitly "1" — a launched site must never be one typo in
+     * an unrelated variable away from going dark.
+     */
+    PREVIEW_MODE: z.enum(["0", "1"]).default("0"),
+    /**
+     * Optional. Unset, /preview alone opens the site — fine for keeping
+     * passers-by out, useless against anyone who guesses the path. Set it and
+     * the link becomes /preview?key=<token>, which is worth doing before the
+     * domain is public anywhere.
+     */
+    PREVIEW_TOKEN: z.string().min(1).optional(),
+
     /** Payments — Stripe is the reference provider (US/USD). */
     STRIPE_SECRET_KEY: z.string().min(1).optional(),
     STRIPE_WEBHOOK_SECRET: z.string().min(1).optional(),

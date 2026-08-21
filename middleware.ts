@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { PREVIEW_COOKIE } from "@/lib/preview";
 /**
  * Two jobs, both scoped to /admin.
  *
@@ -51,8 +52,63 @@ function adminCsp(nonce: string) {
   ].join("; ");
 }
 
+/**
+ * Paths that must keep working while the holding page is up.
+ *
+ * /admin is the point — the studio has to be able to load stock and test
+ * checkout behind the curtain, and it has its own session gate below.
+ * /api/health is Coolify's readiness probe: gate it and the platform decides
+ * the container never came up and rolls the deploy back.
+ */
+const PREVIEW_EXEMPT = [
+  "/admin",
+  "/preview",
+  "/coming-soon",
+  "/api/health",
+  "/api/payments", // provider webhooks are signed, and must never 200 with HTML
+  "/robots.txt",
+  "/sitemap.xml",
+  "/manifest.webmanifest",
+];
+
+/** The holding page, or null to let the request through untouched. */
+function previewGate(request: NextRequest): NextResponse | null {
+  if (process.env.PREVIEW_MODE !== "1") return null;
+
+  const { pathname } = request.nextUrl;
+
+  const exempt = PREVIEW_EXEMPT.some(
+    (p) => pathname === p || pathname.startsWith(`${p}/`),
+  );
+  if (exempt) return null;
+
+  if (request.cookies.has(PREVIEW_COOKIE)) return null;
+
+  /**
+   * Rewrite, not redirect: the visitor keeps the URL they typed, so the
+   * address bar still reads selaratejewellery.com rather than advertising
+   * that a /coming-soon page exists.
+   */
+  const url = request.nextUrl.clone();
+  url.pathname = "/coming-soon";
+  url.search = "";
+
+  const response = NextResponse.rewrite(url);
+  // The holding page must never be what a crawler banks as the homepage.
+  response.headers.set("X-Robots-Tag", "noindex, nofollow");
+  return response;
+}
+
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  const held = previewGate(request);
+  if (held) return held;
+
+  // Everything below is the admin's business only. The matcher spans the whole
+  // site now that the preview gate needs it, so this guard is what keeps the
+  // nonce and turnstile logic off the storefront.
+  if (!pathname.startsWith("/admin")) return NextResponse.next();
 
   const isSignIn = pathname === "/admin/sign-in";
   const hasSession = request.cookies.has("studio_session");
@@ -89,5 +145,19 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  /**
+   * Sitewide, because the preview gate has to cover every storefront URL — a
+   * gate with a hole in it is not a gate.
+   *
+   * Static assets are excluded rather than exempted in code: the holding page
+   * and the admin both need their own CSS and JS to load, and running
+   * middleware on every chunk request costs latency for nothing.
+   *
+   * This does NOT make the storefront dynamic. Middleware runs ahead of the
+   * cache and returns `next()` untouched once PREVIEW_MODE is off, so the
+   * statically prerendered pages are still served as static.
+   */
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|icons/|photography/|.*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|txt|xml|webmanifest)$).*)",
+  ],
 };

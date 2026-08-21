@@ -14,9 +14,18 @@ import { env } from "@/lib/env";
  * 200 with a SoldOut offer, and they hold the inbound links this catalogue
  * accrues over time.
  */
+/** Same reason as robots.ts: PREVIEW_MODE is runtime, this file is not. */
+export const dynamic = "force-dynamic";
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = env.SITE_URL.replace(/\/$/, "");
   const now = new Date();
+
+  // Pre-launch the sitemap is the one page that still describes the real site:
+  // it is excluded from the holding-page rewrite so robots.txt stays coherent,
+  // which would otherwise leave the whole unreleased catalogue listed at a
+  // predictable URL. Nothing to advertise until there is something to visit.
+  if (env.PREVIEW_MODE === "1") return [];
 
   const staticPages: MetadataRoute.Sitemap = [
     { url: `${base}/`, lastModified: now, changeFrequency: "weekly", priority: 1 },
