@@ -16,6 +16,23 @@ COPY . .
 # No runtime secrets exist at image-build time; lib/env.ts skips enforcement.
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV SKIP_ENV_VALIDATION=1
+
+# Build-time configuration.
+#
+# Next resolves next.config.ts `headers()` and `images.remotePatterns` during
+# `next build` and bakes the result into the routes manifest. Supplying these
+# only as runtime env vars is too late: the CSP would ship without
+# `upgrade-insecure-requests`, and next/image would reject every remote URL
+# with a 400.
+#
+# Neither is a secret — both are public URLs — so build args are safe here
+# even though their values persist in the image history. Runtime secrets must
+# never be passed this way.
+ARG SITE_URL
+ARG S3_PUBLIC_URL
+ENV SITE_URL=${SITE_URL}
+ENV S3_PUBLIC_URL=${S3_PUBLIC_URL}
+
 RUN npm run build
 
 # ---- migrate / worker ------------------------------------------------------
