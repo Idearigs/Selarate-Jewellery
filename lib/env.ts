@@ -95,7 +95,21 @@ const schema = z
     isProd: env.NODE_ENV === "production",
   }));
 
-const parsed = schema.safeParse(process.env);
+/**
+ * An empty variable means "not set".
+ *
+ * Zod treats "" as a present value, so `.optional()` lets it through to
+ * `.url()`, which rejects it, and `.default()` never fires. Deployment
+ * platforms produce empty strings constantly: a Dockerfile's
+ * `ENV FOO=${FOO}` with no --build-arg, a compose `env_file` line with
+ * nothing after the `=`, a UI field saved blank. Every one of those means
+ * absent, and none of them should fail a build.
+ */
+const present = Object.fromEntries(
+  Object.entries(process.env).filter(([, value]) => value !== ""),
+);
+
+const parsed = schema.safeParse(present);
 
 if (!parsed.success) {
   const detail = parsed.error.issues
