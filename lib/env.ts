@@ -67,6 +67,21 @@ const schema = z
      */
     PREVIEW_TOKEN: z.string().min(1).optional(),
 
+    /**
+     * First-run setup, for platforms with no step to run a script by hand.
+     * See lib/db/bootstrap.ts — both are ignored once the tables are non-empty.
+     *
+     * ADMIN_PASSWORD is a real credential and belongs in the platform's secret
+     * store, not in a compose file. Remove it once the account exists.
+     */
+    SEED_ON_BOOT: z.enum(["0", "1"]).default("0"),
+    ADMIN_EMAIL: z.string().email().optional(),
+    ADMIN_NAME: z.string().min(1).optional(),
+    ADMIN_PASSWORD: z
+      .string()
+      .min(12, "ADMIN_PASSWORD must be at least 12 characters")
+      .optional(),
+
     /** Payments — Stripe is the reference provider (US/USD). */
     STRIPE_SECRET_KEY: z.string().min(1).optional(),
     STRIPE_WEBHOOK_SECRET: z.string().min(1).optional(),

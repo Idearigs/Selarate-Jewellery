@@ -31,6 +31,11 @@ async function createPostgres(): Promise<Db> {
 
   if (process.env.MIGRATE_ON_BOOT !== "0") await migrateOnBoot(db, client);
 
+  // After the schema exists, never before: bootstrap reads two tables to
+  // decide whether this is a first run.
+  const { bootstrap } = await import("./bootstrap");
+  await bootstrap(db);
+
   return db;
 }
 
