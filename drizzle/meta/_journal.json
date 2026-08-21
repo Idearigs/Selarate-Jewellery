@@ -57,6 +57,13 @@
       "when": 1786685321665,
       "tag": "0007_square_masked_marvel",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1787292739014,
+      "tag": "0008_brief_bastion",
+      "breakpoints": true
     }
   ]
 }

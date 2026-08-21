@@ -3,7 +3,7 @@ import { BRAND_NAME } from "@/lib/brand";
 import { cn } from "@/lib/cn";
 
 /**
- * The wordmark: "SÉLARTÉ" set in Marcellus and tracked wide. This is
+ * The wordmark: "SELARATE" set in Marcellus and tracked wide. This is
  * type, not artwork — if a drawn logotype ever arrives, replace the inner span
  * and keep the optical fix below.
  *

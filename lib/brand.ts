@@ -5,20 +5,17 @@
  * every transactional email — nine surfaces that must never disagree, because a
  * mismatched sender name is what phishing looks like.
  *
- * Both é are U+00E9 (a precomposed character, not "e" + a combining accent), so
- * each compares and sorts as a single character and survives copy-paste intact.
- * Both fonts carry the glyph: the site uses Google's `latin` subset of
- * Marcellus, which spans U+00C9/U+00E9, and the OG renderer uses the full
- * `assets/fonts/Marcellus-Regular.ttf`.
+ * Plain ASCII, matching the registered domain selaratejewellery.com. An
+ * earlier draft carried accents ("Sélarté"); they are gone because the name is
+ * spelled Selarate, and a wordmark that disagrees with the domain reads as the
+ * wrong site.
  *
- * The wordmark renders this uppercased in CSS — "SÉLARTÉ". Both accents are
- * deliberately kept on the capitals; dropping them is a French typographic
- * convention that would read here as a spelling error.
+ * The wordmark renders this uppercased in CSS — "SELARATE".
  *
  * `settings.studioName` in the database overrides this for the JewelryStore
  * JSON-LD, so the owner can correct it without a deploy. This is the fallback.
  */
-export const BRAND_NAME = "Sélarté";
+export const BRAND_NAME = "Selarate";
 
 /**
  * The goldsmith. Named here beside the studio because the two appear together

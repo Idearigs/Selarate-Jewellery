@@ -528,7 +528,7 @@ export const settings = pgTable(
     id: integer("id").primaryKey().default(1),
     /** Owner-editable. Literal rather than imported from lib/brand.ts so
      *  drizzle-kit never has to resolve a path alias to diff the schema. */
-    studioName: text("studio_name").notNull().default("Sélarté"),
+    studioName: text("studio_name").notNull().default("Selarate"),
     studioEmail: text("studio_email").notNull().default("studio@example.com"),
     studioPhone: text("studio_phone"),
     studioAddress: text("studio_address"),
